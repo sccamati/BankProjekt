@@ -9,7 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using System.Web;
-
+using BankProjekt.ViewModels;
 
 namespace BankProjekt.Controllers
 {
@@ -108,7 +108,16 @@ namespace BankProjekt.Controllers
         // GET: Transfers/Create
         public ActionResult Create()
         {
-            return View();
+            var bankAccounts = db.Profiles.Single(u => u.Email == User.Identity.Name).BankAccounts.Select(b => new TransferCreateViewModel
+            {
+                Id = b.Id,
+                Info = $"Numer {b.Number} {b.Balance}zł",
+                
+            });
+            @ViewBag.BankAccounts = new SelectList(bankAccounts, "Id", "Info");
+
+            
+            return View(new TransferCreateViewModel());
         }
 
         // POST: Transfers/Create
@@ -116,16 +125,53 @@ namespace BankProjekt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,TransferType,AddressesNumber,ReceiversName,AddressesName,ReceiversNumber,Title,Cash,Date")] Transfer transfer)
+        public ActionResult Create([Bind(Include = "Id, ReceiversName, ReceiversNumber, Title, Cash, Date")] TransferCreateViewModel transferCreate)
         {
             if (ModelState.IsValid)
             {
-                db.Transfers.Add(transfer);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                int id = transferCreate.Id;
+                BankAccount bankAccount = db.BankAccounts.Single(b => b.Id.Equals(transferCreate.Id));
+                var profile = db.Profiles.Single(p => p.Email.Equals(User.Identity.Name));
+                
+                if(bankAccount.Balance < transferCreate.Cash)
+                {
+                    return RedirectToAction("Create");
+                }
+                else
+                {
+                    Transfer transfer = new Transfer
+                    {
+                        AddressesName = profile.Name + " " + profile.LastName,
+                        AddressesNumber = bankAccount.Number,
+                        TransferType = TransferType.Transfer,
+                        ReceiversName = transferCreate.ReceiversName,
+                        ReceiversNumber = transferCreate.ReceiversNumber,
+                        Title = transferCreate.Title,
+                        Cash = transferCreate.Cash,
+                        Date = DateTime.Now
+                    };
+                    
+                    bankAccount.Balance -= transferCreate.Cash;
+
+                    transfer.AddresseBalance = bankAccount.Balance;
+
+                if (db.BankAccounts.Any(b => b.Number.Equals(transferCreate.ReceiversNumber)))
+                    {
+
+                        db.BankAccounts.Single(b => b.Number.Equals(transferCreate.ReceiversNumber)).Balance += transferCreate.Cash;
+                        
+                        transfer.ReceiverBalance = db.BankAccounts.Single(b => b.Number.Equals(transferCreate.ReceiversNumber)).Balance;
+                    }
+
+                    db.Transfers.Add(transfer);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+
+               
             }
 
-            return View(transfer);
+            return View();
         }
 
         // GET: Transfers/Edit/5
@@ -184,7 +230,7 @@ namespace BankProjekt.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
+       
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -201,8 +247,6 @@ namespace BankProjekt.Controllers
                 Date = t.Key,
                 TransferCount = t.Count()
             });
-
-      
 
             return View(data.ToList());
         }

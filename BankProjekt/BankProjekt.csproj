@@ -194,7 +194,8 @@
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\Profile.cs" />
     <Compile Include="Models\Transfer.cs" />
-    <Compile Include="Models\TransferDateGroup.cs" />
+    <Compile Include="ViewModels\TransferCreateViewModel.cs" />
+    <Compile Include="ViewModels\TransferDateGroup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -260,7 +261,6 @@
     <Content Include="Views\Profiles\Details.cshtml" />
     <Content Include="Views\Profiles\Edit.cshtml" />
     <Content Include="Views\Profiles\Index.cshtml" />
-    <Content Include="Views\Transfers\Create.cshtml" />
     <Content Include="Views\Transfers\Delete.cshtml" />
     <Content Include="Views\Transfers\Details.cshtml" />
     <Content Include="Views\Transfers\Edit.cshtml" />
@@ -271,6 +271,7 @@
     <Content Include="Views\CreditProposals\Details.cshtml" />
     <Content Include="Views\CreditProposals\Edit.cshtml" />
     <Content Include="Views\CreditProposals\Index.cshtml" />
+    <Content Include="Views\Transfers\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
