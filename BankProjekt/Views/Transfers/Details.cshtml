@@ -1,0 +1,82 @@
+﻿@model BankProjekt.Models.Transfer
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Transfer</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TransferType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransferType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddressesNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddressesNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReceiversName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReceiversName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddressesName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddressesName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReceiversNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReceiversNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Cash)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cash)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
