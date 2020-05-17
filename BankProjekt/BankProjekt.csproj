@@ -194,6 +194,7 @@
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\Profile.cs" />
     <Compile Include="Models\Transfer.cs" />
+    <Compile Include="Models\TransferDateGroup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -254,11 +255,6 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\CreditProposals\Create.cshtml" />
-    <Content Include="Views\CreditProposals\Delete.cshtml" />
-    <Content Include="Views\CreditProposals\Details.cshtml" />
-    <Content Include="Views\CreditProposals\Edit.cshtml" />
-    <Content Include="Views\CreditProposals\Index.cshtml" />
     <Content Include="Views\Profiles\Create.cshtml" />
     <Content Include="Views\Profiles\Delete.cshtml" />
     <Content Include="Views\Profiles\Details.cshtml" />
@@ -269,9 +265,16 @@
     <Content Include="Views\Transfers\Details.cshtml" />
     <Content Include="Views\Transfers\Edit.cshtml" />
     <Content Include="Views\Transfers\Index.cshtml" />
+    <Content Include="Views\Transfers\About.cshtml" />
+    <Content Include="Views\CreditProposals\Create.cshtml" />
+    <Content Include="Views\CreditProposals\Delete.cshtml" />
+    <Content Include="Views\CreditProposals\Details.cshtml" />
+    <Content Include="Views\CreditProposals\Edit.cshtml" />
+    <Content Include="Views\CreditProposals\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Pictures\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

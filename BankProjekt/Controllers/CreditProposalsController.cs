@@ -49,10 +49,16 @@ namespace BankProjekt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ProfileId,Cash,NumberOfMonths,ProposalStatus")] CreditProposal creditProposal)
+        public ActionResult Create([Bind(Include = "Id,ProfileId,Cash,NumberOfMonths,ProposalStatus,Picture")] CreditProposal creditProposal)
         {
             if (ModelState.IsValid)
             {
+                HttpPostedFileBase file = Request.Files["filePicture"];
+                if(file != null && file.ContentLength > 0)
+                {
+                    creditProposal.Picture = file.FileName;
+                    file.SaveAs(HttpContext.Server.MapPath("~/Pictures/") + file.FileName);
+                }
                 db.CreditProposals.Add(creditProposal);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -83,7 +89,7 @@ namespace BankProjekt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ProfileId,Cash,NumberOfMonths,ProposalStatus")] CreditProposal creditProposal)
+        public ActionResult Edit([Bind(Include = "Id,ProfileId,Cash,NumberOfMonths,ProposalStatus,Picture")] CreditProposal creditProposal)
         {
             if (ModelState.IsValid)
             {

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace BankProjekt.Models
 {
+    [Authorize(Roles = "Admin, User")]
     public class Profile
     {
         public int Id { get; set; }

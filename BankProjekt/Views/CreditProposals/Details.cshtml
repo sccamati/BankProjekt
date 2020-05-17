@@ -42,6 +42,15 @@
             @Html.DisplayFor(model => model.ProposalStatus)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.Picture)
+        </dt>
+
+        <dd>
+            <img src="~/Pictures/@Html.DisplayFor(model => model.Picture)" alt="" height="50px" width="50px" />
+            
+        </dd>
+
     </dl>
 </div>
 <p>

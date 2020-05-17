@@ -105,3 +105,7 @@ C:\Users\mateu\Desktop\Semestr6\PZ\BankProjekt\BankProjekt\bin\Microsoft.CodeDom
 C:\Users\mateu\Desktop\Semestr6\PZ\BankProjekt\BankProjekt\obj\Debug\BankProjekt.csproj.CopyComplete
 C:\Users\mateu\Desktop\Semestr6\PZ\BankProjekt\BankProjekt\obj\Debug\BankProjekt.dll
 C:\Users\mateu\Desktop\Semestr6\PZ\BankProjekt\BankProjekt\obj\Debug\BankProjekt.pdb
+C:\Users\mateu\Desktop\Semestr6\PZ\BankProjekt\BankProjekt\bin\PagedList.dll
+C:\Users\mateu\Desktop\Semestr6\PZ\BankProjekt\BankProjekt\bin\PagedList.Mvc.dll
+C:\Users\mateu\Desktop\Semestr6\PZ\BankProjekt\BankProjekt\bin\PagedList.xml
+C:\Users\mateu\Desktop\Semestr6\PZ\BankProjekt\BankProjekt\bin\PagedList.Mvc.xml

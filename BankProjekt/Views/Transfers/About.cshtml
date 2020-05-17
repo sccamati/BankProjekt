@@ -1,0 +1,30 @@
+﻿@model IEnumerable<BankProjekt.Models.TransferDateGroup>
+
+@{
+    ViewBag.Title = "Transfers Statistics";
+}
+
+    <h2>Transfers Statistics</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Date
+        </th>
+        <th>
+            Transfers Count
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td >
+                @item.TransferCount
+            </td>
+        </tr>
+    }
+</table>
