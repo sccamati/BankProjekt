@@ -43,7 +43,8 @@ namespace BankProjekt.Models
         [Display(Name = "Date")]
         public DateTime Date { get; set;}
 
-        public virtual TransferType TransferTypeEnum { get; set; }
+
+
 
     }
     public enum TransferType
@@ -51,5 +52,7 @@ namespace BankProjekt.Models
     Transfer,
     Payment,
     PayOff
+
 }
+
 }

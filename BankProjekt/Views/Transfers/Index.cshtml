@@ -1,5 +1,6 @@
 ﻿@model PagedList.IPagedList<BankProjekt.Models.Transfer>
 @using PagedList.Mvc;
+@using BankProjekt.Models;
 
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
@@ -14,9 +15,17 @@
 @using (Html.BeginForm("Index", "Transfers", FormMethod.Get))
 {
 <p>
-    Find by Title: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+    Find by Title: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+
+    @Html.DropDownList("TypeSort",
+   EnumHelper.GetSelectList(typeof(TransferType)),
+   "Select My Type",
+   new { @class = "form-control" })
+
     <input type="submit" value="Search" />
 </p>
+
+
 }
 <table class="table">
     <tr>
@@ -47,95 +56,95 @@
 
     @foreach (var item in Model)
     {
-<tr>
+        <tr>
 
 
-    @foreach (var number in (IEnumerable<String>)ViewBag.BankNumbers)
-    {
-        if (item.TransferType.ToString().Equals("Transfer") && item.AddressesNumber.Equals(number))
-        {
-            <td>
-                <span style="color:red">Outgoing</span>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReceiversName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReceiversNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AddresseBalance)
-            </td>
-            break;
-        }
-        else if (item.TransferType.ToString().Equals("Transfer") && item.ReceiversNumber.Equals(number))
-        {
-            <td>
-                <span style="color:forestgreen">Incoming</span>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AddressesName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AddressesNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReceiverBalance)
-            </td>
-            break;
-        }
-        else if (item.TransferType.ToString().Equals("Payment") && item.ReceiversNumber.Equals(number))
-        {
-<td>
-    <span style="color:blue">@Html.DisplayFor(modelItem => item.TransferType)</span>
-</td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReceiversName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReceiversNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReceiverBalance)
-            </td>
-            break;
-        }
-        else if (item.TransferType.ToString().Equals("PayOff") && item.AddressesNumber.Equals(number))
-        {
-            <td>
-                <span style="color:mediumpurple">@Html.DisplayFor(modelItem => item.TransferType)</span>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AddressesName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AddressesNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AddresseBalance)
-            </td>
-            break;
-        }
-    }
+            @foreach (var number in (IEnumerable<String>)ViewBag.BankNumbers)
+            {
+                if (item.TransferType.ToString().Equals("Transfer") && item.AddressesNumber.Equals(number))
+                {
+                    <td>
+                        <span style="color:red">Outgoing</span>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReceiversName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReceiversNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AddresseBalance)
+                    </td>
+                    break;
+                }
+                else if (item.TransferType.ToString().Equals("Transfer") && item.ReceiversNumber.Equals(number))
+                {
+                    <td>
+                        <span style="color:forestgreen">Incoming</span>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AddressesName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AddressesNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReceiverBalance)
+                    </td>
+                    break;
+                }
+                else if (item.TransferType.ToString().Equals("Payment") && item.ReceiversNumber.Equals(number))
+                {
+                    <td>
+                        <span style="color:blue">@Html.DisplayFor(modelItem => item.TransferType)</span>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReceiversName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReceiversNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReceiverBalance)
+                    </td>
+                    break;
+                }
+                else if (item.TransferType.ToString().Equals("PayOff") && item.AddressesNumber.Equals(number))
+                {
+                    <td>
+                        <span style="color:mediumpurple">@Html.DisplayFor(modelItem => item.TransferType)</span>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AddressesName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AddressesNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AddresseBalance)
+                    </td>
+                    break;
+                }
+            }
 
 
 
 
-    <td>
-        @Html.DisplayFor(modelItem => item.Title)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Cash)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Date)
-    </td>
-    <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-    </td>
-</tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cash)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
     }
 
 </table>

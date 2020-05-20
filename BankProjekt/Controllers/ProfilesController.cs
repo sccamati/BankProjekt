@@ -18,8 +18,8 @@ namespace BankProjekt.Controllers
         // GET: Profiles
         public ActionResult Index()
         {
-            var profiles = db.Profiles.Include(p => p.Address);
-            return View(profiles.ToList());
+            var profile = db.Profiles.Include(p => p.Address).Single(p => p.Email.Equals(User.Identity.Name));
+            return View(profile);
         }
 
         // GET: Profiles/Details/5

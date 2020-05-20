@@ -19,7 +19,8 @@ namespace BankProjekt.Controllers
         // GET: CreditProposals
         public ActionResult Index()
         {
-            var creditProposals = db.CreditProposals.Include(c => c.Profile);
+
+            var creditProposals = db.CreditProposals.Include(c => c.Profile).Where(cp => cp.Profile.Email.Equals(User.Identity.Name));
             return View(creditProposals.ToList());
         }
 

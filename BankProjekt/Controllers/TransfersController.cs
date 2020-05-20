@@ -18,7 +18,7 @@ namespace BankProjekt.Controllers
         private BankContext db = new BankContext();
 
         // GET: Transfers
-        public ActionResult Index(int? id, string sortOrder, string searchString, int? page, string currentFilter)
+        public ActionResult Index(int? id, string sortOrder, string searchString, int? page, string currentFilter, TransferType? TypeSort)
         {
             var bankAccounts = db.Profiles.Single(u => u.Email == User.Identity.Name).BankAccounts;
             var transfers = db.Transfers.Select(t => t);
@@ -45,6 +45,10 @@ namespace BankProjekt.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 transfers = transfers.Where(s => s.Title.Contains(searchString));
+            }
+            if(TypeSort != null)
+            {
+                transfers = transfers.Where(t => t.TransferType == TypeSort );
             }
 
             switch (sortOrder)
