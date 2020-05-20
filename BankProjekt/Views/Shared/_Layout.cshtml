@@ -17,7 +17,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Super Bank", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -28,8 +28,7 @@
                     {
                         <li>@Html.ActionLink("Credit Proposal", "Create", "CreditProposals")</li>
                         <li>@Html.ActionLink("Transfer", "Create", "Transfers")</li>
-                        <li>@Html.ActionLink("Payment", "Payment", "Transfers")</li>
-                        <li>@Html.ActionLink("PayOff", "PayOff", "Transfers")</li>
+                        <li>@Html.ActionLink("Payment/PayOff", "PaymentAndPayOff", "Transfers")</li>
                         <li>@Html.ActionLink("History", "Index", "Transfers")</li>
                         <li>@Html.ActionLink("My Profile", "Index", "Profiles")</li>
                     }

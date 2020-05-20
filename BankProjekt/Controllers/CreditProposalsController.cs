@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -53,12 +54,16 @@ namespace BankProjekt.Controllers
         {
             if (ModelState.IsValid)
             {
-                HttpPostedFileBase file = Request.Files["filePicture"];
-                if(file != null && file.ContentLength > 0)
+                HttpPostedFileBase file = Request.Files["File"];
+                if (file != null && file.ContentLength > 0)
                 {
                     creditProposal.Picture = file.FileName;
-                    file.SaveAs(HttpContext.Server.MapPath("~/Pictures/") + file.FileName);
+                    string filepath = Path.Combine(Server.MapPath("~/Pictures"), file.FileName);
+                    file.SaveAs(filepath);
                 }
+                var Profile = db.Profiles.Single(p => p.Email.Equals(User.Identity.Name));
+                creditProposal.Profile = Profile;
+                creditProposal.ProposalStatus = CreditProposalStatus.Waiting;
                 db.CreditProposals.Add(creditProposal);
                 db.SaveChanges();
                 return RedirectToAction("Index");

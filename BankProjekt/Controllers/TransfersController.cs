@@ -23,6 +23,7 @@ namespace BankProjekt.Controllers
             var bankAccounts = db.Profiles.Single(u => u.Email == User.Identity.Name).BankAccounts;
             var transfers = db.Transfers.Select(t => t);
 
+            ViewBag.BankNumbers = bankAccounts.Select(b => b.Number);
             ViewBag.CurrentSort = sortOrder;
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
             ViewBag.CashSortParam = sortOrder == "Cash" ? "cash_desc" : "Cash";
@@ -127,6 +128,14 @@ namespace BankProjekt.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id, ReceiversName, ReceiversNumber, Title, Cash, Date")] TransferCreateViewModel transferCreate)
         {
+            var bankAccounts = db.Profiles.Single(u => u.Email == User.Identity.Name).BankAccounts.Select(b => new TransferCreateViewModel
+            {
+                Id = b.Id,
+                Info = $"Numer {b.Number} {b.Balance}zł",
+
+            });
+            @ViewBag.BankAccounts = new SelectList(bankAccounts, "Id", "Info");
+
             if (ModelState.IsValid)
             {
                 int id = transferCreate.Id;
@@ -250,5 +259,98 @@ namespace BankProjekt.Controllers
 
             return View(data.ToList());
         }
+
+        // GET: Transfers/Payment
+        public ActionResult PaymentAndPayOff()
+        {
+            var bankAccounts = db.Profiles.Single(u => u.Email == User.Identity.Name).BankAccounts.Select(b => new TransferPaymentAndPayOffViewModel
+            {
+                Id = b.Id,
+                Info = $"Numer {b.Number} \n {b.Balance}zł",
+
+            });
+            @ViewBag.BankAccounts = new SelectList(bankAccounts, "Id", "Info");
+
+            List<TransferPaymentAndPayOffViewModel> type = new List<TransferPaymentAndPayOffViewModel>();
+            type.Add(new TransferPaymentAndPayOffViewModel { Type = 1, Info = "Payment" });
+            type.Add(new TransferPaymentAndPayOffViewModel { Type = 2, Info = "PayOff" });
+            @ViewBag.Type = new SelectList(type, "Type", "Info");
+
+            return View(new TransferPaymentAndPayOffViewModel());
+        }
+
+        // POST: Transfers/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult PaymentAndPayOff([Bind(Include = "Id, Cash, Type")] TransferPaymentAndPayOffViewModel transferCreate)
+        {
+            var bankAccounts = db.Profiles.Single(u => u.Email == User.Identity.Name).BankAccounts.Select(b => new TransferPaymentAndPayOffViewModel
+            {
+                Id = b.Id,
+                Info = $"Numer {b.Number} \n {b.Balance}zł",
+
+            });
+            @ViewBag.BankAccounts = new SelectList(bankAccounts, "Id", "Info");
+
+            List<TransferPaymentAndPayOffViewModel> type = new List<TransferPaymentAndPayOffViewModel>();
+            type.Add(new TransferPaymentAndPayOffViewModel { Type = 1, Info = "Payment" });
+            type.Add(new TransferPaymentAndPayOffViewModel { Type = 2, Info = "PayOff" });
+            @ViewBag.Type = new SelectList(type, "Type", "Info");
+
+            if (ModelState.IsValid)
+            {
+                BankAccount bankAccount = db.BankAccounts.Single(b => b.Id.Equals(transferCreate.Id));
+                var profile = db.Profiles.Single(p => p.Email.Equals(User.Identity.Name));
+
+                if(transferCreate.Type == 1)
+                {
+                    bankAccount.Balance += transferCreate.Cash;
+                    Transfer transfer = new Transfer
+                    {
+                        TransferType = TransferType.Payment,
+                        ReceiversName = profile.Name + " " + profile.LastName,
+                        ReceiversNumber = bankAccount.Number,
+                        Title = "Payment",
+                        Cash = transferCreate.Cash,
+                        Date = DateTime.Now,
+                        ReceiverBalance = bankAccount.Balance
+                        
+                    };
+                    db.Transfers.Add(transfer);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    if (bankAccount.Balance < transferCreate.Cash)
+                    {
+                        @ViewBag.Error = "Not enough money on this account";
+                        return View("PaymentAndPayOff");
+                    }
+                    bankAccount.Balance -= transferCreate.Cash;
+                    Transfer transfer = new Transfer
+                    {
+                        TransferType = TransferType.PayOff,
+                        AddressesName = profile.Name + " " + profile.LastName,
+                        AddressesNumber = bankAccount.Number,
+                        Title = "PayOff",
+                        Cash = transferCreate.Cash,
+                        Date = DateTime.Now,
+                        AddresseBalance = bankAccount.Balance
+
+                    };
+                    db.Transfers.Add(transfer);
+                    db.SaveChanges();
+                }
+
+                  
+
+            }
+            @ViewBag.Error = "";
+            return View();
+        }
+
     }
+
 }

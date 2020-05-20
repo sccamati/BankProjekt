@@ -24,16 +24,13 @@
             Type
         </th>
         <th>
-            Addresses Number
+            To/From
         </th>
         <th>
-            Receiver Name
+            Number
         </th>
         <th>
-            AddressesName
-        </th>
-        <th>
-            Receivers Number
+            Balance
         </th>
         <th>
             Title
@@ -50,37 +47,95 @@
 
     @foreach (var item in Model)
     {
-        <tr>
+<tr>
+
+
+    @foreach (var number in (IEnumerable<String>)ViewBag.BankNumbers)
+    {
+        if (item.TransferType.ToString().Equals("Transfer") && item.AddressesNumber.Equals(number))
+        {
             <td>
-                @Html.DisplayFor(modelItem => item.TransferType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AddressesNumber)
+                <span style="color:red">Outgoing</span>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ReceiversName)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.ReceiversNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddresseBalance)
+            </td>
+            break;
+        }
+        else if (item.TransferType.ToString().Equals("Transfer") && item.ReceiversNumber.Equals(number))
+        {
+            <td>
+                <span style="color:forestgreen">Incoming</span>
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.AddressesName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddressesNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReceiverBalance)
+            </td>
+            break;
+        }
+        else if (item.TransferType.ToString().Equals("Payment") && item.ReceiversNumber.Equals(number))
+        {
+<td>
+    <span style="color:blue">@Html.DisplayFor(modelItem => item.TransferType)</span>
+</td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReceiversName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ReceiversNumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Title)
+                @Html.DisplayFor(modelItem => item.ReceiverBalance)
+            </td>
+            break;
+        }
+        else if (item.TransferType.ToString().Equals("PayOff") && item.AddressesNumber.Equals(number))
+        {
+            <td>
+                <span style="color:mediumpurple">@Html.DisplayFor(modelItem => item.TransferType)</span>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Cash)
+                @Html.DisplayFor(modelItem => item.AddressesName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Date)
+                @Html.DisplayFor(modelItem => item.AddressesNumber)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @Html.DisplayFor(modelItem => item.AddresseBalance)
             </td>
-        </tr>
+            break;
+        }
+    }
+
+
+
+
+    <td>
+        @Html.DisplayFor(modelItem => item.Title)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Cash)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Date)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+    </td>
+</tr>
     }
 
 </table>

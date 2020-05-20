@@ -25,6 +25,6 @@ namespace BankProjekt.DAL
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
 
-        public System.Data.Entity.DbSet<BankProjekt.ViewModels.TransferCreateViewModel> BankAccountSelects { get; set; }
+
     }
 }
