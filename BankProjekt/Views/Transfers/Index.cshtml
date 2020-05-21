@@ -17,11 +17,13 @@
 <p>
     Find by Title: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
 
-    @Html.DropDownList("TypeSort",
-   EnumHelper.GetSelectList(typeof(TransferType)),
-   "Select My Type",
-   new { @class = "form-control" })
-
+    @Html.DropDownList("TypeSort", EnumHelper.GetSelectList(typeof(TransferType)), "Select Type", new { @class = "form-control" })
+    <div class="form-group">
+        @Html.Label("Sort By Account", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("BankAccount", (IEnumerable<SelectListItem>)ViewBag.BankAccounts, "Select Account", new { @class = "form-control" })
+        </div>
+    </div>
     <input type="submit" value="Search" />
 </p>
 

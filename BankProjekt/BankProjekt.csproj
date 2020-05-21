@@ -174,11 +174,15 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BankAccountsController.cs" />
     <Compile Include="Controllers\CreditProposalsController.cs" />
+    <Compile Include="Controllers\CreditsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\NotificationsController.cs" />
     <Compile Include="Controllers\ProfilesController.cs" />
     <Compile Include="Controllers\TransfersController.cs" />
+    <Compile Include="Controllers\WorkerController.cs" />
     <Compile Include="DAL\BankContext.cs" />
     <Compile Include="DAL\BankInitializer.cs" />
     <Compile Include="Global.asax.cs">
@@ -274,6 +278,21 @@
     <Content Include="Views\CreditProposals\Index.cshtml" />
     <Content Include="Views\Transfers\Create.cshtml" />
     <Content Include="Views\Transfers\PaymentAndPayOff.cshtml" />
+    <Content Include="Views\BankAccounts\Create.cshtml" />
+    <Content Include="Views\BankAccounts\Delete.cshtml" />
+    <Content Include="Views\BankAccounts\Details.cshtml" />
+    <Content Include="Views\BankAccounts\Edit.cshtml" />
+    <Content Include="Views\BankAccounts\Index.cshtml" />
+    <Content Include="Views\Worker\CreditProposalsList.cshtml" />
+    <Content Include="Views\Worker\ProfilesList.cshtml" />
+    <Content Include="Views\Worker\CreditProposalDetail.cshtml" />
+    <Content Include="Views\Credits\Details.cshtml" />
+    <Content Include="Views\Credits\Index.cshtml" />
+    <Content Include="Views\Notifications\Create.cshtml" />
+    <Content Include="Views\Notifications\Delete.cshtml" />
+    <Content Include="Views\Notifications\Details.cshtml" />
+    <Content Include="Views\Notifications\Edit.cshtml" />
+    <Content Include="Views\Notifications\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

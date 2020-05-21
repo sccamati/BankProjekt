@@ -16,7 +16,6 @@ namespace BankProjekt.Models
         [Display(Name = "Message")]
         public String Message { get; set; }
         public DateTime Date { get; set; }
-        
 
         public virtual Profile Profile { get; set; }
     }

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<BankProjekt.Models.CreditProposal>
+
+@{
+    ViewBag.Title = "View";
+}
+
+<h2>View</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.BankAccount.Number)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cash)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumberOfMonths)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProposalStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Picture)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.BankAccount.Number)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cash)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumberOfMonths)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProposalStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Picture)
+        </td>
+        <td>
+            @Html.ActionLink("Accept", "CreditProposalAccept", new { id = item.Id }) |
+            @Html.ActionLink("Reject", "CreditProposalReject", new { id = item.Id }) |
+            @Html.ActionLink("Details", "CreditProposalDetail", new { id = item.Id })
+
+        </td>
+    </tr>
+}
+
+</table>

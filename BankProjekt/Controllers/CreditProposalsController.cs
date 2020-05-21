@@ -19,8 +19,8 @@ namespace BankProjekt.Controllers
         // GET: CreditProposals
         public ActionResult Index()
         {
-
-            var creditProposals = db.CreditProposals.Include(c => c.Profile).Where(cp => cp.Profile.Email.Equals(User.Identity.Name));
+            
+            var creditProposals = db.CreditProposals.Include(c => c.BankAccount).Where(b => b.BankAccount.Profile.Email.Equals(User.Identity.Name));
             return View(creditProposals.ToList());
         }
 
@@ -42,6 +42,13 @@ namespace BankProjekt.Controllers
         // GET: CreditProposals/Create
         public ActionResult Create()
         {
+            var bankAccounts = db.Profiles.Single(u => u.Email == User.Identity.Name).BankAccounts.Select(b => new
+            {
+                BankAccount = b.Id,
+                Info = $"Number: {b.Number} \n Balance: {b.Balance} "
+            });
+            
+            ViewBag.BankAccounts = new SelectList(bankAccounts, "BankAccount", "Info");
             ViewBag.ProfileId = new SelectList(db.Profiles, "Id", "Name");
             return View();
         }
@@ -51,8 +58,16 @@ namespace BankProjekt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ProfileId,Cash,NumberOfMonths,ProposalStatus,Picture")] CreditProposal creditProposal)
+        public ActionResult Create([Bind(Include = "Id,BankAccountId,Cash,NumberOfMonths")] CreditProposal creditProposal)
         {
+            var bankAccounts = db.Profiles.Single(u => u.Email == User.Identity.Name).BankAccounts.Select(b => new
+            {
+                Id = b.Id,
+                Info = $"Number: {b.Number} \n Balance: {b.Balance} "
+            });
+
+            ViewBag.BankAccounts = new SelectList(bankAccounts, "BankAccount", "Info"); 
+
             if (ModelState.IsValid)
             {
                 HttpPostedFileBase file = Request.Files["File"];
@@ -62,15 +77,12 @@ namespace BankProjekt.Controllers
                     string filepath = Path.Combine(Server.MapPath("~/Pictures"), file.FileName);
                     file.SaveAs(filepath);
                 }
-                var Profile = db.Profiles.Single(p => p.Email.Equals(User.Identity.Name));
-                creditProposal.Profile = Profile;
+                
                 creditProposal.ProposalStatus = CreditProposalStatus.Waiting;
                 db.CreditProposals.Add(creditProposal);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.ProfileId = new SelectList(db.Profiles, "Id", "Name", creditProposal.ProfileId);
             return View(creditProposal);
         }
 
@@ -86,7 +98,6 @@ namespace BankProjekt.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ProfileId = new SelectList(db.Profiles, "Id", "Name", creditProposal.ProfileId);
             return View(creditProposal);
         }
 
@@ -103,7 +114,6 @@ namespace BankProjekt.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ProfileId = new SelectList(db.Profiles, "Id", "Name", creditProposal.ProfileId);
             return View(creditProposal);
         }
 

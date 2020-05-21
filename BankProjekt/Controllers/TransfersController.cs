@@ -1,5 +1,6 @@
 ﻿using BankProjekt.DAL;
 using BankProjekt.Models;
+using BankProjekt.ViewModels;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using System.Web;
-using BankProjekt.ViewModels;
 
 namespace BankProjekt.Controllers
 {
@@ -18,18 +17,25 @@ namespace BankProjekt.Controllers
         private BankContext db = new BankContext();
 
         // GET: Transfers
-        public ActionResult Index(int? id, string sortOrder, string searchString, int? page, string currentFilter, TransferType? TypeSort)
+        public ActionResult Index(int? id, string sortOrder, string searchString, int? page, string currentFilter, TransferType? TypeSort, string bankAccount)
         {
             var bankAccounts = db.Profiles.Single(u => u.Email == User.Identity.Name).BankAccounts;
             var transfers = db.Transfers.Select(t => t);
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
 
             ViewBag.BankNumbers = bankAccounts.Select(b => b.Number);
             ViewBag.CurrentSort = sortOrder;
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
             ViewBag.CashSortParam = sortOrder == "Cash" ? "cash_desc" : "Cash";
 
-            int pageSize = 3;
-            int pageNumber = (page ?? 1);
+            var banksA = bankAccounts.Select(b => new
+            {
+                Id = b.Number,
+                Info = $"Number: {b.Number} \n Balance: {b.Balance} "
+            });
+
+            ViewBag.BankAccounts = new SelectList(banksA, "Id", "Info");
 
             if (searchString != null)
             {
@@ -42,13 +48,18 @@ namespace BankProjekt.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
+            if (!String.IsNullOrEmpty(bankAccount))
+            {
+                transfers = transfers.Where(t => t.AddressesNumber.Equals(bankAccount) || t.ReceiversNumber.Equals(bankAccount));
+            }
+
             if (!String.IsNullOrEmpty(searchString))
             {
                 transfers = transfers.Where(s => s.Title.Contains(searchString));
             }
-            if(TypeSort != null)
+            if (TypeSort != null)
             {
-                transfers = transfers.Where(t => t.TransferType == TypeSort );
+                transfers = transfers.Where(t => t.TransferType == TypeSort);
             }
 
             switch (sortOrder)
@@ -113,15 +124,14 @@ namespace BankProjekt.Controllers
         // GET: Transfers/Create
         public ActionResult Create()
         {
-            var bankAccounts = db.Profiles.Single(u => u.Email == User.Identity.Name).BankAccounts.Select(b => new TransferCreateViewModel
+            var bankAccounts = db.Profiles.Single(u => u.Email == User.Identity.Name).BankAccounts.Select(b => new
             {
-                Id = b.Id,
-                Info = $"Numer {b.Number} {b.Balance}zł",
-                
+                b.Id,
+                Info = $"Number: {b.Number} \n Balance: {b.Balance} "
             });
-            @ViewBag.BankAccounts = new SelectList(bankAccounts, "Id", "Info");
 
-            
+            ViewBag.BankAccounts = new SelectList(bankAccounts, "Id", "Info");
+
             return View(new TransferCreateViewModel());
         }
 
@@ -132,21 +142,21 @@ namespace BankProjekt.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id, ReceiversName, ReceiversNumber, Title, Cash, Date")] TransferCreateViewModel transferCreate)
         {
-            var bankAccounts = db.Profiles.Single(u => u.Email == User.Identity.Name).BankAccounts.Select(b => new TransferCreateViewModel
+            var bankAccounts = db.Profiles.Single(u => u.Email == User.Identity.Name).BankAccounts.Select(b => new
             {
-                Id = b.Id,
-                Info = $"Numer {b.Number} {b.Balance}zł",
-
+                b.Id,
+                Info = $"Number: {b.Number} \n Balance: {b.Balance} "
             });
-            @ViewBag.BankAccounts = new SelectList(bankAccounts, "Id", "Info");
+
+            ViewBag.BankAccounts = new SelectList(bankAccounts, "Id", "Info");
 
             if (ModelState.IsValid)
             {
                 int id = transferCreate.Id;
                 BankAccount bankAccount = db.BankAccounts.Single(b => b.Id.Equals(transferCreate.Id));
                 var profile = db.Profiles.Single(p => p.Email.Equals(User.Identity.Name));
-                
-                if(bankAccount.Balance < transferCreate.Cash)
+
+                if (bankAccount.Balance < transferCreate.Cash)
                 {
                     return RedirectToAction("Create");
                 }
@@ -163,16 +173,15 @@ namespace BankProjekt.Controllers
                         Cash = transferCreate.Cash,
                         Date = DateTime.Now
                     };
-                    
+
                     bankAccount.Balance -= transferCreate.Cash;
 
                     transfer.AddresseBalance = bankAccount.Balance;
 
-                if (db.BankAccounts.Any(b => b.Number.Equals(transferCreate.ReceiversNumber)))
+                    if (db.BankAccounts.Any(b => b.Number.Equals(transferCreate.ReceiversNumber)))
                     {
-
                         db.BankAccounts.Single(b => b.Number.Equals(transferCreate.ReceiversNumber)).Balance += transferCreate.Cash;
-                        
+
                         transfer.ReceiverBalance = db.BankAccounts.Single(b => b.Number.Equals(transferCreate.ReceiversNumber)).Balance;
                     }
 
@@ -180,8 +189,6 @@ namespace BankProjekt.Controllers
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
-
-               
             }
 
             return View();
@@ -243,19 +250,12 @@ namespace BankProjekt.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-       
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+
+
 
         public ActionResult About()
         {
-            IQueryable<TransferDateGroup> data = db.Transfers.GroupBy(t => t.Date).Select( t => new TransferDateGroup
+            IQueryable<TransferDateGroup> data = db.Transfers.GroupBy(t => t.Date).Select(t => new TransferDateGroup
             {
                 Date = t.Key,
                 TransferCount = t.Count()
@@ -271,7 +271,6 @@ namespace BankProjekt.Controllers
             {
                 Id = b.Id,
                 Info = $"Numer {b.Number} \n {b.Balance}zł",
-
             });
             @ViewBag.BankAccounts = new SelectList(bankAccounts, "Id", "Info");
 
@@ -294,7 +293,6 @@ namespace BankProjekt.Controllers
             {
                 Id = b.Id,
                 Info = $"Numer {b.Number} \n {b.Balance}zł",
-
             });
             @ViewBag.BankAccounts = new SelectList(bankAccounts, "Id", "Info");
 
@@ -308,7 +306,7 @@ namespace BankProjekt.Controllers
                 BankAccount bankAccount = db.BankAccounts.Single(b => b.Id.Equals(transferCreate.Id));
                 var profile = db.Profiles.Single(p => p.Email.Equals(User.Identity.Name));
 
-                if(transferCreate.Type == 1)
+                if (transferCreate.Type == 1)
                 {
                     bankAccount.Balance += transferCreate.Cash;
                     Transfer transfer = new Transfer
@@ -320,7 +318,6 @@ namespace BankProjekt.Controllers
                         Cash = transferCreate.Cash,
                         Date = DateTime.Now,
                         ReceiverBalance = bankAccount.Balance
-                        
                     };
                     db.Transfers.Add(transfer);
                     db.SaveChanges();
@@ -342,19 +339,22 @@ namespace BankProjekt.Controllers
                         Cash = transferCreate.Cash,
                         Date = DateTime.Now,
                         AddresseBalance = bankAccount.Balance
-
                     };
                     db.Transfers.Add(transfer);
                     db.SaveChanges();
                 }
-
-                  
-
             }
             @ViewBag.Error = "";
             return View();
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
-
 }
