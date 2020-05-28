@@ -21,7 +21,7 @@ namespace BankProjekt.DAL
 
             roleManager.Create(new IdentityRole("Admin"));
             roleManager.Create(new IdentityRole("User"));
-
+            roleManager.Create(new IdentityRole("Worker"));
 
             var user = new ApplicationUser { UserName = "email@wp.pl" };
             string password = "Password1.";
@@ -37,6 +37,11 @@ namespace BankProjekt.DAL
             string password3 = "Admin1.";
             userManager.Create(user3, password3);
             userManager.AddToRole(user3.Id, "Admin");
+
+            var worker = new ApplicationUser { UserName = "worker@wp.pl" };
+            string workerpass = "Worker1.";
+            userManager.Create(worker, workerpass);
+            userManager.AddToRole(worker.Id, "Worker");
 
 
             var addresses = new List<Address>

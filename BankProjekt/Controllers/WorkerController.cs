@@ -8,10 +8,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BankProjekt.Models;
-
+using BankProjekt.Helpers;
 
 namespace BankProjekt.Controllers
 {
+    //[Authorize(Roles = "Admin, Worker")]
     public class WorkerController : Controller
     {
         private BankContext db = new BankContext();
@@ -55,6 +56,8 @@ namespace BankProjekt.Controllers
             }
             else
             {
+                
+
                 Credit credit = new Credit()
                 {
                     BankAccount = cr.BankAccount,
@@ -69,7 +72,20 @@ namespace BankProjekt.Controllers
                 cr.ProposalStatus = CreditProposalStatus.Approved;
                 db.Credits.Add(credit);
                 cr.BankAccount.Balance += cr.Cash;
+
+                Transfer transfer = new Transfer()
+                {
+                    TransferType = TransferType.Credit,
+                    ReceiversName = $"{cr.BankAccount.Profile.Name} {cr.BankAccount.Profile.LastName}",
+                    ReceiversNumber = cr.BankAccount.Number,
+                    Title = "Credit",
+                    Cash = cr.Cash,
+                    ReceiverBalance = cr.BankAccount.Balance,
+                    Date = DateTime.Now
+                };
+                db.Transfers.Add(transfer);
                 db.SaveChanges();
+                Email.SendMail("pzprojektbank@gmail.com", "Credit Proposal Status", "Hello Yours credit proposal was accepted");
             }
             return RedirectToAction("CreditProposalsList");
         }
@@ -87,9 +103,17 @@ namespace BankProjekt.Controllers
             }
             else
             {
+                Email.SendMail("pzprojektbank@gmail.com", "Credit Proposal Status", "Hello Yours credit proposal was rejected");
                 cr.ProposalStatus = CreditProposalStatus.Rejected;
+                db.SaveChanges();
             }
             return RedirectToAction("CreditProposalsList");
+        }
+
+        public ActionResult ProfileDetails()
+        {
+            
+            return RedirectToRoute("Profile/Details");
         }
 
         protected override void Dispose(bool disposing)

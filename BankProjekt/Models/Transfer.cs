@@ -51,8 +51,9 @@ namespace BankProjekt.Models
     {
     Transfer,
     Payment,
-    PayOff
-
+    PayOff,
+    CreditPayment,
+    Credit
 }
 
 }

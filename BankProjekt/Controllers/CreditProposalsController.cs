@@ -17,11 +17,19 @@ namespace BankProjekt.Controllers
         private BankContext db = new BankContext();
 
         // GET: CreditProposals
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
+            if(id != null)
+            {
+                var creditProposalsW = db.CreditProposals.Include(c => c.BankAccount).Where(b => b.BankAccount.Profile.Id == id);
+                return View(creditProposalsW.ToList());
+            }
+          
+                var creditProposals = db.CreditProposals.Include(c => c.BankAccount).Where(b => b.BankAccount.Profile.Email.Equals(User.Identity.Name));
+                return View(creditProposals.ToList());
             
-            var creditProposals = db.CreditProposals.Include(c => c.BankAccount).Where(b => b.BankAccount.Profile.Email.Equals(User.Identity.Name));
-            return View(creditProposals.ToList());
+     
+            
         }
 
         // GET: CreditProposals/Details/5
@@ -77,6 +85,7 @@ namespace BankProjekt.Controllers
                     string filepath = Path.Combine(Server.MapPath("~/Pictures"), file.FileName);
                     file.SaveAs(filepath);
                 }
+                
                 
                 creditProposal.ProposalStatus = CreditProposalStatus.Waiting;
                 db.CreditProposals.Add(creditProposal);

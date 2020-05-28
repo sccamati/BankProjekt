@@ -188,6 +188,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Email.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\BankAccount.cs" />
@@ -284,7 +285,6 @@
     <Content Include="Views\BankAccounts\Edit.cshtml" />
     <Content Include="Views\BankAccounts\Index.cshtml" />
     <Content Include="Views\Worker\CreditProposalsList.cshtml" />
-    <Content Include="Views\Worker\ProfilesList.cshtml" />
     <Content Include="Views\Worker\CreditProposalDetail.cshtml" />
     <Content Include="Views\Credits\Details.cshtml" />
     <Content Include="Views\Credits\Index.cshtml" />
@@ -293,6 +293,7 @@
     <Content Include="Views\Notifications\Details.cshtml" />
     <Content Include="Views\Notifications\Edit.cshtml" />
     <Content Include="Views\Notifications\Index.cshtml" />
+    <Content Include="Views\Worker\ProfilesList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,9 +1,11 @@
 ﻿using BankProjekt.DAL;
+using BankProjekt.Helpers;
 using BankProjekt.Models;
 using BankProjekt.ViewModels;
 using PagedList;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -19,7 +21,16 @@ namespace BankProjekt.Controllers
         // GET: Transfers
         public ActionResult Index(int? id, string sortOrder, string searchString, int? page, string currentFilter, TransferType? TypeSort, string bankAccount)
         {
-            var bankAccounts = db.Profiles.Single(u => u.Email == User.Identity.Name).BankAccounts;
+            List<BankAccount> bankAccounts = new List<BankAccount>();
+            if(id != null)
+            {
+                bankAccounts = db.Profiles.Single(u => u.Id == id).BankAccounts.ToList();
+            }
+            else
+            {
+                bankAccounts = db.Profiles.Single(u => u.Email == User.Identity.Name).BankAccounts.ToList();
+            }
+            
             var transfers = db.Transfers.Select(t => t);
             int pageSize = 3;
             int pageNumber = (page ?? 1);
@@ -28,6 +39,7 @@ namespace BankProjekt.Controllers
             ViewBag.CurrentSort = sortOrder;
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
             ViewBag.CashSortParam = sortOrder == "Cash" ? "cash_desc" : "Cash";
+
 
             var banksA = bankAccounts.Select(b => new
             {
@@ -278,7 +290,7 @@ namespace BankProjekt.Controllers
             type.Add(new TransferPaymentAndPayOffViewModel { Type = 1, Info = "Payment" });
             type.Add(new TransferPaymentAndPayOffViewModel { Type = 2, Info = "PayOff" });
             @ViewBag.Type = new SelectList(type, "Type", "Info");
-
+            
             return View(new TransferPaymentAndPayOffViewModel());
         }
 
@@ -319,6 +331,7 @@ namespace BankProjekt.Controllers
                         Date = DateTime.Now,
                         ReceiverBalance = bankAccount.Balance
                     };
+                    Email.SendMail("pzprojektbank@gmail.com", "Payment", "Payment was made");
                     db.Transfers.Add(transfer);
                     db.SaveChanges();
                 }
@@ -347,6 +360,8 @@ namespace BankProjekt.Controllers
             @ViewBag.Error = "";
             return View();
         }
+
+
 
         protected override void Dispose(bool disposing)
         {

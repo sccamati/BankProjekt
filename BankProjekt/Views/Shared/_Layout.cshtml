@@ -21,8 +21,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Notigication", "Index", "Notifications")</li>
-                    @if (Request.IsAuthenticated)
+                    @if (Context.User.IsInRole("User"))
                     {
                         <li>@Html.ActionLink("Credits List", "Index", "Credits")</li>
                         <li>@Html.ActionLink("Credit Proposals List", "Index", "CreditProposals")</li>
@@ -32,6 +31,12 @@
                         <li>@Html.ActionLink("History", "Index", "Transfers")</li>
                         <li>@Html.ActionLink("My Profile", "Index", "Profiles")</li>
                     }
+                    @if (Context.User.IsInRole("Worker"))
+                    {
+                        <li>@Html.ActionLink("Credit Proposals", "CreditProposalsList", "Worker")</li>
+                        <li>@Html.ActionLink("Profiles", "ProfilesList", "Worker")</li>
+                    }
+
 
                 </ul>
                 @Html.Partial("_LoginPartial")

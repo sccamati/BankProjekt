@@ -12,7 +12,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.BankAccount.Number)
+            @Html.DisplayName("User")
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Cash)
@@ -23,16 +23,13 @@
         <th>
             @Html.DisplayNameFor(model => model.ProposalStatus)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Picture)
-        </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.BankAccount.Number)
+            @Html.ActionLink( $"{item.BankAccount.Profile.Name} {item.BankAccount.Profile.LastName}", "Index", "Profiles", new { id = item.BankAccount.ProfileId}, null)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Cash)
@@ -43,9 +40,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.ProposalStatus)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Picture)
-        </td>
+
         <td>
             @Html.ActionLink("Accept", "CreditProposalAccept", new { id = item.Id }) |
             @Html.ActionLink("Reject", "CreditProposalReject", new { id = item.Id }) |

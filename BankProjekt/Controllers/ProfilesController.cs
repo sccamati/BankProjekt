@@ -16,8 +16,13 @@ namespace BankProjekt.Controllers
         private BankContext db = new BankContext();
 
         // GET: Profiles
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
+            if(id != null)
+            {
+                var profileW = db.Profiles.Include(p => p.Address).Single(p => p.Id == id);
+                return View(profileW);
+            }
             var profile = db.Profiles.Include(p => p.Address).Single(p => p.Email.Equals(User.Identity.Name));
             return View(profile);
         }
