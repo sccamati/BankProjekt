@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace BankProjekt.Models
@@ -11,17 +8,21 @@ namespace BankProjekt.Models
     public class CreditProposal
     {
         public int Id { get; set; }
+
         [Display(Name = "Bank Account")]
         public int BankAccountId { get; set; }
+
         [Required]
         [Range(0.01, 999999)]
         public Decimal Cash { get; set; }
+
         [Required]
         [Range(1, 36)]
         [Display(Name = "Number Of Months")]
         public int NumberOfMonths { get; set; }
+
         public CreditProposalStatus ProposalStatus { get; set; }
-        
+
         public String Picture { get; set; }
         public virtual BankAccount BankAccount { get; set; }
     }

@@ -3,9 +3,9 @@ using BankProjekt.Helpers;
 using BankProjekt.Models;
 using BankProjekt.ViewModels;
 using PagedList;
+using Rotativa;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -22,7 +22,7 @@ namespace BankProjekt.Controllers
         public ActionResult Index(int? id, string sortOrder, string searchString, int? page, string currentFilter, TransferType? TypeSort, string bankAccount)
         {
             List<BankAccount> bankAccounts = new List<BankAccount>();
-            if(id != null)
+            if (id != null)
             {
                 bankAccounts = db.Profiles.Single(u => u.Id == id).BankAccounts.ToList();
             }
@@ -30,7 +30,7 @@ namespace BankProjekt.Controllers
             {
                 bankAccounts = db.Profiles.Single(u => u.Email == User.Identity.Name).BankAccounts.ToList();
             }
-            
+
             var transfers = db.Transfers.Select(t => t);
             int pageSize = 3;
             int pageNumber = (page ?? 1);
@@ -39,7 +39,6 @@ namespace BankProjekt.Controllers
             ViewBag.CurrentSort = sortOrder;
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
             ViewBag.CashSortParam = sortOrder == "Cash" ? "cash_desc" : "Cash";
-
 
             var banksA = bankAccounts.Select(b => new
             {
@@ -113,7 +112,6 @@ namespace BankProjekt.Controllers
             {
                 var bankAccountsNumber = bankAccounts.Single(b => b.Id.Equals(id)).Number;
                 transfers = transfers.Where(t => t.AddressesNumber.Equals(bankAccountsNumber) || t.ReceiversNumber.Equals(bankAccountsNumber));
-
                 return View(transfers.ToPagedList(pageNumber, pageSize));
             }
         }
@@ -130,12 +128,32 @@ namespace BankProjekt.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.BankNumbers = db.Profiles.Single(p => p.Email.Equals(User.Identity.Name)).BankAccounts.Select(b => b.Number);
+
             return View(transfer);
+        }
+
+        public ActionResult Confirmation(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Transfer transfer = db.Transfers.Find(id);
+            if (transfer == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.BankNumbers = db.Profiles.Single(p => p.Email.Equals(User.Identity.Name)).BankAccounts.Select(b => b.Number);
+
+            return new ViewAsPdf("Confirmation", transfer);
         }
 
         // GET: Transfers/Create
         public ActionResult Create()
         {
+            ViewBag.definedRecipients = db.DefinedRecipients.Where(dr => dr.Profile.Email.Equals(User.Identity.Name)).ToList();
+
             var bankAccounts = db.Profiles.Single(u => u.Email == User.Identity.Name).BankAccounts.Select(b => new
             {
                 b.Id,
@@ -154,9 +172,11 @@ namespace BankProjekt.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id, ReceiversName, ReceiversNumber, Title, Cash, Date")] TransferCreateViewModel transferCreate)
         {
+            ViewBag.definedRecipients = db.DefinedRecipients.Where(dr => dr.Profile.Email.Equals(User.Identity.Name)).ToList();
+
             var bankAccounts = db.Profiles.Single(u => u.Email == User.Identity.Name).BankAccounts.Select(b => new
             {
-                b.Id,
+                b.Number,
                 Info = $"Number: {b.Number} \n Balance: {b.Balance} "
             });
 
@@ -199,7 +219,18 @@ namespace BankProjekt.Controllers
 
                     db.Transfers.Add(transfer);
                     db.SaveChanges();
-                    return RedirectToAction("Index");
+
+                    var DRset = db.DefinedRecipients.Single(df => df.ReceiversName.Equals(transferCreate.ReceiversName) && df.ReceiversNumber.Equals(transferCreate.ReceiversNumber));
+                    if (DRset == null)
+                    {
+                        DefinedRecipient definedRecipient = new DefinedRecipient { ProfileId = bankAccount.ProfileId, ReceiversName = transfer.ReceiversName, ReceiversNumber = transfer.ReceiversNumber };
+                        return RedirectToAction("DefinedRecipient", definedRecipient);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    
                 }
             }
 
@@ -263,8 +294,6 @@ namespace BankProjekt.Controllers
             return RedirectToAction("Index");
         }
 
-
-
         public ActionResult About()
         {
             IQueryable<TransferDateGroup> data = db.Transfers.GroupBy(t => t.Date).Select(t => new TransferDateGroup
@@ -290,7 +319,7 @@ namespace BankProjekt.Controllers
             type.Add(new TransferPaymentAndPayOffViewModel { Type = 1, Info = "Payment" });
             type.Add(new TransferPaymentAndPayOffViewModel { Type = 2, Info = "PayOff" });
             @ViewBag.Type = new SelectList(type, "Type", "Info");
-            
+
             return View(new TransferPaymentAndPayOffViewModel());
         }
 
@@ -361,7 +390,30 @@ namespace BankProjekt.Controllers
             return View();
         }
 
+        public ActionResult DefinedRecipient(int ProfileId, String ReceiversNumber, String ReceiversName)
+        {
+            return View();
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DefinedRecipient([Bind(Include = "Id,ProfileId,ReceiversName,ReceiversNumber")] DefinedRecipient definedRecipient)
+        {
+            if (ModelState.IsValid)
+            {
+                db.DefinedRecipients.Add(definedRecipient);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(definedRecipient);
+        }
+
+        [HttpPost]
+        public ActionResult CancelDefinedRecipient()
+        {
+            return RedirectToAction("Index");
+        }
 
         protected override void Dispose(bool disposing)
         {

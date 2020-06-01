@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
+﻿using System.Configuration;
 using System.Net;
-using System.Web;
 
 namespace BankProjekt.Helpers
 {
@@ -26,8 +22,6 @@ namespace BankProjekt.Helpers
                 Port = 587
             };
             smtpClient.Send(message);
-
         }
-
     }
 }

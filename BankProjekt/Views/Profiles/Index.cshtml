@@ -101,22 +101,20 @@
                 </tr>
                 @foreach (var item in Model.BankAccounts)
                 {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Number)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Balance)
-                </td>
-                <td>
-                    @Html.ActionLink("History", "Index", "Transfers", new { id = item.Id}, null)
-                </td>
-                
-            </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Number)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Balance)
+                    </td>
+                    <td>
+                        @Html.ActionLink("History", "Index", "Transfers", new { id = item.Id}, null)
+                    </td>
+                </tr>
                 }
             </table>
         </dd>
-
     </dl>
 </div>
 <p>

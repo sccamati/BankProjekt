@@ -6,7 +6,6 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -23,21 +22,19 @@
                 <ul class="nav navbar-nav">
                     @if (Context.User.IsInRole("User"))
                     {
-                        <li>@Html.ActionLink("Credits List", "Index", "Credits")</li>
-                        <li>@Html.ActionLink("Credit Proposals List", "Index", "CreditProposals")</li>
-                        <li>@Html.ActionLink("Credit Proposal", "Create", "CreditProposals")</li>
-                        <li>@Html.ActionLink("Transfer", "Create", "Transfers")</li>
-                        <li>@Html.ActionLink("Payment/PayOff", "PaymentAndPayOff", "Transfers")</li>
-                        <li>@Html.ActionLink("History", "Index", "Transfers")</li>
-                        <li>@Html.ActionLink("My Profile", "Index", "Profiles")</li>
+                    <li>@Html.ActionLink("Credits List", "Index", "Credits")</li>
+                    <li>@Html.ActionLink("Credit Proposals List", "Index", "CreditProposals")</li>
+                    <li>@Html.ActionLink("Credit Proposal", "Create", "CreditProposals")</li>
+                    <li>@Html.ActionLink("Transfer", "Create", "Transfers")</li>
+                    <li>@Html.ActionLink("Payment/PayOff", "PaymentAndPayOff", "Transfers")</li>
+                    <li>@Html.ActionLink("History", "Index", "Transfers")</li>
+                    <li>@Html.ActionLink("My Profile", "Index", "Profiles")</li>
                     }
                     @if (Context.User.IsInRole("Worker"))
                     {
-                        <li>@Html.ActionLink("Credit Proposals", "CreditProposalsList", "Worker")</li>
-                        <li>@Html.ActionLink("Profiles", "ProfilesList", "Worker")</li>
+                    <li>@Html.ActionLink("Credit Proposals", "CreditProposalsList", "Worker")</li>
+                    <li>@Html.ActionLink("Profiles", "ProfilesList", "Worker")</li>
                     }
-
-
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

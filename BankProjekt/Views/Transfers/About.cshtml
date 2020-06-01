@@ -4,7 +4,7 @@
     ViewBag.Title = "Transfers Statistics";
 }
 
-    <h2>Transfers Statistics</h2>
+<h2>Transfers Statistics</h2>
 
 <table class="table">
     <tr>
@@ -18,13 +18,13 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td >
-                @item.TransferCount
-            </td>
-        </tr>
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @item.TransferCount
+        </td>
+    </tr>
     }
 </table>

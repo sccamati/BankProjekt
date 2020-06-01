@@ -6,6 +6,40 @@
 
 <h2>ProfilesList</h2>
 
+@using (Html.BeginForm())
+{
+<p>
+
+    <div class="form-group">
+        @Html.Label("Find by name: ", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("nameSearch")
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Find by last name: ", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("lastNameS")
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Find by last email: ", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("emailS")
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Find by PESEL: ", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("peselS")
+        </div>
+    </div>
+
+
+    <input type="submit" value="Search" />
+</p>
+
+}
 
 <table class="table">
     <tr>
@@ -30,33 +64,33 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Pesel)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BirthDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MothersName)
-        </td>
-        <td>
-            @Html.ActionLink("Credit Proposals", "Index", "CreditProposals", new { id = item.Id }, null) |
-            @Html.ActionLink("Profile", "Index", "Profiles", new { id = item.Id }, null) |
-            @Html.ActionLink("Credits", "Index", "Credits", new { id = item.Id }, null) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-        </td>
-    </tr>
-}
-
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pesel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BirthDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MothersName)
+            </td>
+            <td>
+                @Html.ActionLink("Credit Proposals", "Index", "CreditProposals", new { id = item.Id }, null) |
+                @Html.ActionLink("Profile", "Index", "Profiles", new { id = item.Id }, null) |
+                @Html.ActionLink("Credits", "Index", "Credits", new { id = item.Id }, null) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
 </table>

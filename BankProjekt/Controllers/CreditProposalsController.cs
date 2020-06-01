@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using BankProjekt.DAL;
+using BankProjekt.Models;
 using System.Data;
 using System.Data.Entity;
 using System.IO;
@@ -7,8 +7,6 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using BankProjekt.DAL;
-using BankProjekt.Models;
 
 namespace BankProjekt.Controllers
 {
@@ -19,17 +17,14 @@ namespace BankProjekt.Controllers
         // GET: CreditProposals
         public ActionResult Index(int? id)
         {
-            if(id != null)
+            if (id != null)
             {
                 var creditProposalsW = db.CreditProposals.Include(c => c.BankAccount).Where(b => b.BankAccount.Profile.Id == id);
                 return View(creditProposalsW.ToList());
             }
-          
-                var creditProposals = db.CreditProposals.Include(c => c.BankAccount).Where(b => b.BankAccount.Profile.Email.Equals(User.Identity.Name));
-                return View(creditProposals.ToList());
-            
-     
-            
+
+            var creditProposals = db.CreditProposals.Include(c => c.BankAccount).Where(b => b.BankAccount.Profile.Email.Equals(User.Identity.Name));
+            return View(creditProposals.ToList());
         }
 
         // GET: CreditProposals/Details/5
@@ -55,14 +50,14 @@ namespace BankProjekt.Controllers
                 BankAccount = b.Id,
                 Info = $"Number: {b.Number} \n Balance: {b.Balance} "
             });
-            
+
             ViewBag.BankAccounts = new SelectList(bankAccounts, "BankAccount", "Info");
             ViewBag.ProfileId = new SelectList(db.Profiles, "Id", "Name");
             return View();
         }
 
         // POST: CreditProposals/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -74,7 +69,7 @@ namespace BankProjekt.Controllers
                 Info = $"Number: {b.Number} \n Balance: {b.Balance} "
             });
 
-            ViewBag.BankAccounts = new SelectList(bankAccounts, "BankAccount", "Info"); 
+            ViewBag.BankAccounts = new SelectList(bankAccounts, "BankAccount", "Info");
 
             if (ModelState.IsValid)
             {
@@ -85,8 +80,7 @@ namespace BankProjekt.Controllers
                     string filepath = Path.Combine(Server.MapPath("~/Pictures"), file.FileName);
                     file.SaveAs(filepath);
                 }
-                
-                
+
                 creditProposal.ProposalStatus = CreditProposalStatus.Waiting;
                 db.CreditProposals.Add(creditProposal);
                 db.SaveChanges();
@@ -111,14 +105,21 @@ namespace BankProjekt.Controllers
         }
 
         // POST: CreditProposals/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ProfileId,Cash,NumberOfMonths,ProposalStatus,Picture")] CreditProposal creditProposal)
+        public ActionResult Edit([Bind(Include = "Id,ProfileId,BankAccountId,Cash,NumberOfMonths,Picture")] CreditProposal creditProposal)
         {
             if (ModelState.IsValid)
             {
+                HttpPostedFileBase file = Request.Files["File"];
+                if (file != null && file.ContentLength > 0)
+                {
+                    creditProposal.Picture = file.FileName;
+                    string filepath = Path.Combine(Server.MapPath("~/Pictures"), file.FileName);
+                    file.SaveAs(filepath);
+                }
                 db.Entry(creditProposal).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace BankProjekt.Models
@@ -32,28 +29,25 @@ namespace BankProjekt.Models
         [StringLength(100, ErrorMessage = "Too long title")]
         [DataType(DataType.Text)]
         [Display(Name = "Title")]
-        public String Title { get; set;}
+        public String Title { get; set; }
 
         [Range(0.01, 9999999999)]
-        public Decimal Cash { get; set;}
+        public Decimal Cash { get; set; }
+
         public Decimal AddresseBalance { get; set; }
         public Decimal ReceiverBalance { get; set; }
 
         [DataType(DataType.DateTime)]
         [Display(Name = "Date")]
-        public DateTime Date { get; set;}
-
-
-
-
+        public DateTime Date { get; set; }
     }
+
     public enum TransferType
     {
-    Transfer,
-    Payment,
-    PayOff,
-    CreditPayment,
-    Credit
-}
-
+        Transfer,
+        Payment,
+        PayOff,
+        CreditPayment,
+        Credit
+    }
 }

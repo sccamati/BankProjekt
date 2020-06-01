@@ -21,7 +21,7 @@
 @using (Html.BeginForm("Create", "CreditProposals", FormMethod.Post,
     new { enctype = "multipart/form-data" }))
 {
-    @Html.AntiForgeryToken()
+@Html.AntiForgeryToken()
 
 <div class="form-horizontal">
     <h4>CreditProposal</h4>
@@ -29,7 +29,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Picture, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            <input class="form-control" type="file" name="File" accept="image/x-png,image/jpeg" required/>
+            <input class="form-control" type="file" name="File" accept="image/x-png,image/jpeg" required />
             @Html.ValidationMessageFor(model => model.Picture, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -41,7 +41,6 @@
         </div>
     </div>
 
-
     <div class="form-group">
         @Html.LabelFor(model => model.Cash, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -49,7 +48,6 @@
             @Html.ValidationMessageFor(model => model.Cash, "", new { @class = "text-danger" })
         </div>
     </div>
-
 
     <div class="form-group">
         @Html.LabelFor(model => model.NumberOfMonths, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -72,7 +70,6 @@
             <input class="form-control" type="text" id="monthPayment" readonly />
         </div>
     </div>
-
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">

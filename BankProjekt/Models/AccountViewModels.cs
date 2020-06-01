@@ -32,6 +32,7 @@ namespace BankProjekt.Models
         [Required]
         [Display(Name = "Code")]
         public string Code { get; set; }
+
         public string ReturnUrl { get; set; }
 
         [Display(Name = "Remember this browser?")]
@@ -81,7 +82,6 @@ namespace BankProjekt.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "Name")]
@@ -103,7 +103,6 @@ namespace BankProjekt.Models
         [Display(Name = "BirthDate")]
         public DateTime BirthDate { get; set; }
 
-
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "MothersName")]
@@ -118,7 +117,6 @@ namespace BankProjekt.Models
         [DataType(DataType.Text)]
         [Display(Name = "Street")]
         public string Street { get; set; }
-
 
         [Required]
         [DataType(DataType.PostalCode)]

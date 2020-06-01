@@ -1,14 +1,11 @@
 ﻿using BankProjekt.DAL;
+using BankProjekt.Helpers;
+using BankProjekt.Models;
 using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using BankProjekt.Models;
-using BankProjekt.Helpers;
 
 namespace BankProjekt.Controllers
 {
@@ -16,6 +13,7 @@ namespace BankProjekt.Controllers
     public class WorkerController : Controller
     {
         private BankContext db = new BankContext();
+
         // GET: Worker
         public ActionResult CreditProposalsList()
         {
@@ -23,10 +21,28 @@ namespace BankProjekt.Controllers
             return View(creditProposals.ToList());
         }
 
-        public ActionResult ProfilesList()
+        public ActionResult ProfilesList(string nameSearch, string lastNameS, string emailS, string peselS)
         {
-            var profile = db.Profiles.Include(p => p.Address);
-            return View(profile);
+            var profiles = db.Profiles.Include(p => p.Address);
+
+            if (!String.IsNullOrEmpty(nameSearch))
+            {
+                profiles = profiles.Where(p => p.Name.Equals(nameSearch));
+            }
+            if (!String.IsNullOrEmpty(lastNameS))
+            {
+                profiles = profiles.Where(p => p.LastName.Equals(lastNameS));
+            }
+            if (!String.IsNullOrEmpty(emailS))
+            {
+                profiles = profiles.Where(p => p.Email.Equals(emailS));
+            }
+            if (!String.IsNullOrEmpty(peselS))
+            {
+                profiles = profiles.Where(p => p.Pesel.Equals(peselS));
+            }
+
+            return View(profiles);
         }
 
         public ActionResult CreditProposalDetail(int? id)
@@ -56,8 +72,6 @@ namespace BankProjekt.Controllers
             }
             else
             {
-                
-
                 Credit credit = new Credit()
                 {
                     BankAccount = cr.BankAccount,
@@ -112,7 +126,6 @@ namespace BankProjekt.Controllers
 
         public ActionResult ProfileDetails()
         {
-            
             return RedirectToRoute("Profile/Details");
         }
 

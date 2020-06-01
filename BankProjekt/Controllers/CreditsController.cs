@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using BankProjekt.DAL;
+using BankProjekt.Models;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using BankProjekt.DAL;
-using BankProjekt.Models;
 
 namespace BankProjekt.Controllers
 {
@@ -18,7 +15,7 @@ namespace BankProjekt.Controllers
         // GET: Credits
         public ActionResult Index(int? id)
         {
-            if(id != null)
+            if (id != null)
             {
                 var creditsW = db.Credits.Include(c => c.BankAccount).Where(c => c.BankAccount.Profile.Id == id);
                 return View(creditsW.ToList());
@@ -41,7 +38,6 @@ namespace BankProjekt.Controllers
             }
             return View(credit);
         }
-
 
         protected override void Dispose(bool disposing)
         {

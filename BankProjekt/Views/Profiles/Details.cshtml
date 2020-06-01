@@ -101,18 +101,17 @@
                 </tr>
                 @foreach (var item in Model.BankAccounts)
                 {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Number)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Balance)
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Number)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Balance)
+                    </td>
+                </tr>
                 }
             </table>
         </dd>
-
     </dl>
 </div>
 <p>
