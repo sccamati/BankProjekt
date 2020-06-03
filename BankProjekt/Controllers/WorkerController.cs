@@ -1,6 +1,7 @@
 ﻿using BankProjekt.DAL;
 using BankProjekt.Helpers;
 using BankProjekt.Models;
+using PagedList;
 using System;
 using System.Data.Entity;
 using System.Linq;
@@ -21,13 +22,59 @@ namespace BankProjekt.Controllers
             return View(creditProposals.ToList());
         }
 
-        public ActionResult ProfilesList(string nameSearch, string lastNameS, string emailS, string peselS)
+        public ActionResult ProfilesList(string nameS, string lastNameS, string emailS, string peselS, string nameFilter, string lastNameFilter, string peselFilter, string emailFilter, int? page)
         {
             var profiles = db.Profiles.Include(p => p.Address);
 
-            if (!String.IsNullOrEmpty(nameSearch))
+
+            if (nameS != null)
             {
-                profiles = profiles.Where(p => p.Name.Equals(nameSearch));
+                page = 1;
+            }
+            else
+            {
+                nameS = nameFilter;
+            }
+
+            ViewBag.nameFilter = nameS;
+
+            if (lastNameS != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                lastNameS = lastNameFilter;
+            }
+
+            ViewBag.lastNameFilter = lastNameS;
+
+            if (emailS != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                emailS = emailFilter;
+            }
+
+            ViewBag.emailFilter = emailS;
+
+            if (peselS != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                peselS = peselFilter;
+            }
+
+            ViewBag.peselFilter = peselS;
+
+
+            if (!String.IsNullOrEmpty(nameS))
+            {
+                profiles = profiles.Where(p => p.Name.Equals(nameS));
             }
             if (!String.IsNullOrEmpty(lastNameS))
             {
@@ -42,7 +89,11 @@ namespace BankProjekt.Controllers
                 profiles = profiles.Where(p => p.Pesel.Equals(peselS));
             }
 
-            return View(profiles);
+            profiles = profiles.OrderBy(p => p.LastName);
+
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            return View(profiles.ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult CreditProposalDetail(int? id)

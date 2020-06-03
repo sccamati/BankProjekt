@@ -1,0 +1,15 @@
+﻿.confirmation-countainer{
+    border-bottom: 1px solid black;
+    background-color:#f2f2f2;
+    min-height: 50px;
+}
+
+.name{
+    padding: 15px;
+    float: left;
+}
+
+.value {
+    padding: 15px;
+    float: right;
+}

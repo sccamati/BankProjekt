@@ -11,28 +11,21 @@
     <h4>DefinedRecipient</h4>
     <hr />
     <dl class="dl-horizontal">
+
         <dt>
-            @Html.DisplayNameFor(model => model.ProfileId)
+            @Html.DisplayNameFor(model => model.ReceiversName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ProfileId)
+            @Html.DisplayFor(model => model.ReceiversName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ReciversName)
+            @Html.DisplayNameFor(model => model.ReceiversNumber)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ReciversName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ReciversNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ReciversNumber)
+            @Html.DisplayFor(model => model.ReceiversNumber)
         </dd>
     </dl>
 
@@ -41,7 +34,6 @@
 
     <div class="form-actions no-color">
         <input type="submit" value="Delete" class="btn btn-default" /> |
-        @Html.ActionLink("Back to List", "Index")
     </div>
     }
 </div>

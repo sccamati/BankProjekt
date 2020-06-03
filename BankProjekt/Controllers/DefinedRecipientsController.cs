@@ -17,43 +17,6 @@ namespace BankProjekt.Controllers
             return View(db.DefinedRecipients.ToList());
         }
 
-        // GET: DefinedRecipients/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            DefinedRecipient definedRecipient = db.DefinedRecipients.Find(id);
-            if (definedRecipient == null)
-            {
-                return HttpNotFound();
-            }
-            return View(definedRecipient);
-        }
-
-        // GET: DefinedRecipients/Create
-        public ActionResult DefinedRecipient()
-        {
-            return View();
-        }
-
-        // POST: DefinedRecipients/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult DefinedRecipient([Bind(Include = "Id,ProfileId,ReciversName,ReciversNumber")] DefinedRecipient definedRecipient)
-        {
-            if (ModelState.IsValid)
-            {
-                db.DefinedRecipients.Add(definedRecipient);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(definedRecipient);
-        }
 
         // GET: DefinedRecipients/Edit/5
         public ActionResult Edit(int? id)
@@ -109,7 +72,7 @@ namespace BankProjekt.Controllers
             DefinedRecipient definedRecipient = db.DefinedRecipients.Find(id);
             db.DefinedRecipients.Remove(definedRecipient);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Profiles");
         }
 
         protected override void Dispose(bool disposing)

@@ -1,7 +1,7 @@
 ﻿@model BankProjekt.ViewModels.TransferCreateViewModel
 @using BankProjekt.Models
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Make Transfer";
 }
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
@@ -19,14 +19,13 @@
         });
     });
 </script>
-<h2>Create</h2>
+<h2>Make Transfer</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>TransferCreateModelView</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -40,8 +39,10 @@
         </div>
 
         <table class="table table-hover" id="Recipients" style="display: none">
-            <th>Name</th>
-            <th>Number</th>
+            <tr>
+                <th>Name</th>
+                <th>Number</th>
+            </tr>
             @foreach (var item in (List<DefinedRecipient>)ViewBag.DefinedRecipients)
             {
                 <tr class="col-md-offset-7" onclick="DefinedRecipient('@item.ReceiversName','@item.ReceiversNumber')">
@@ -98,6 +99,3 @@
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>

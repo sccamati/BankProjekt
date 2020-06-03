@@ -32,8 +32,6 @@ namespace BankProjekt.Controllers
             }
 
             var transfers = db.Transfers.Select(t => t);
-            int pageSize = 3;
-            int pageNumber = (page ?? 1);
 
             ViewBag.BankNumbers = bankAccounts.Select(b => b.Number);
             ViewBag.CurrentSort = sortOrder;
@@ -95,6 +93,9 @@ namespace BankProjekt.Controllers
                     transfers = transfers.OrderByDescending(s => s.Date);
                     break;
             }
+
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
 
             if (id == null)
             {
@@ -174,23 +175,27 @@ namespace BankProjekt.Controllers
         {
             ViewBag.definedRecipients = db.DefinedRecipients.Where(dr => dr.Profile.Email.Equals(User.Identity.Name)).ToList();
 
+            
+
+
             var bankAccounts = db.Profiles.Single(u => u.Email == User.Identity.Name).BankAccounts.Select(b => new
             {
-                b.Number,
+                b.Id,
                 Info = $"Number: {b.Number} \n Balance: {b.Balance} "
-            });
+            }).ToList();
 
             ViewBag.BankAccounts = new SelectList(bankAccounts, "Id", "Info");
 
             if (ModelState.IsValid)
             {
-                int id = transferCreate.Id;
+
                 BankAccount bankAccount = db.BankAccounts.Single(b => b.Id.Equals(transferCreate.Id));
                 var profile = db.Profiles.Single(p => p.Email.Equals(User.Identity.Name));
 
                 if (bankAccount.Balance < transferCreate.Cash)
                 {
-                    return RedirectToAction("Create");
+                    ModelState.AddModelError("", "You dont have enough money.");
+                    return View(transferCreate);
                 }
                 else
                 {
@@ -230,7 +235,7 @@ namespace BankProjekt.Controllers
                     {
                         return RedirectToAction("Index");
                     }
-                    
+
                 }
             }
 

@@ -1,6 +1,6 @@
 ﻿using BankProjekt.DAL;
 using BankProjekt.Models;
-using System.Data.Entity;
+using System;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -11,112 +11,41 @@ namespace BankProjekt.Controllers
     {
         private BankContext db = new BankContext();
 
-        // GET: BankAccounts
-        public ActionResult Index()
-        {
-            var bankAccounts = db.BankAccounts.Include(b => b.Profile);
-            return View(bankAccounts.ToList());
-        }
-
-        // GET: BankAccounts/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            BankAccount bankAccount = db.BankAccounts.Find(id);
-            if (bankAccount == null)
-            {
-                return HttpNotFound();
-            }
-            return View(bankAccount);
-        }
-
-        // GET: BankAccounts/Create
-        public ActionResult Create()
-        {
-            ViewBag.ProfileId = new SelectList(db.Profiles, "Id", "Name");
-            return View();
-        }
-
         // POST: BankAccounts/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ProfileId,Number,Balance")] BankAccount bankAccount)
+      
+        public ActionResult Create()
         {
-            if (ModelState.IsValid)
+            var profile = db.Profiles.Single(p => p.Email.Equals(User.Identity.Name));
+            var bankAccounts = db.BankAccounts.Where(b => b.ProfileId == profile.Id).ToList();
+            if(bankAccounts.Count < 3)
             {
+                var number = db.BankAccounts.Max(n => n.Number);
+
+                BankAccount bankAccount = new BankAccount() { Number = (Int32.Parse(number) + 1).ToString(), Balance = 0, Profile = profile };
                 db.BankAccounts.Add(bankAccount);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                ViewBag.Error("");
+                return RedirectToAction("Index", "Profiles");
             }
-
-            ViewBag.ProfileId = new SelectList(db.Profiles, "Id", "Name", bankAccount.ProfileId);
-            return View(bankAccount);
-        }
-
-        // GET: BankAccounts/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
+            else
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                ViewBag.Error("You cant have more than 3 accounts");
+                return RedirectToAction("Index", "Profiles");
             }
-            BankAccount bankAccount = db.BankAccounts.Find(id);
-            if (bankAccount == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.ProfileId = new SelectList(db.Profiles, "Id", "Name", bankAccount.ProfileId);
-            return View(bankAccount);
         }
-
-        // POST: BankAccounts/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ProfileId,Number,Balance")] BankAccount bankAccount)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(bankAccount).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.ProfileId = new SelectList(db.Profiles, "Id", "Name", bankAccount.ProfileId);
-            return View(bankAccount);
-        }
+           
 
         // GET: BankAccounts/Delete/5
-        public ActionResult Delete(int? id)
+       /* public ActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            BankAccount bankAccount = db.BankAccounts.Find(id);
-            if (bankAccount == null)
-            {
-                return HttpNotFound();
-            }
-            return View(bankAccount);
-        }
-
-        // POST: BankAccounts/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            BankAccount bankAccount = db.BankAccounts.Find(id);
-            db.BankAccounts.Remove(bankAccount);
+            db.BankAccounts.Remove(db.BankAccounts.Single(b => b.Id == id));
             db.SaveChanges();
-            return RedirectToAction("Index");
+            
+            return RedirectToAction("Index", "Profiles");
         }
-
+        */
         protected override void Dispose(bool disposing)
         {
             if (disposing)

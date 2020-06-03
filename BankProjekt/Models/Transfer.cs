@@ -4,26 +4,26 @@ using System.Web.Mvc;
 
 namespace BankProjekt.Models
 {
-    [Authorize(Roles = "Admin, User")]
+    
     public class Transfer
     {
         public int Id { get; set; }
         public TransferType TransferType { get; set; }
 
         [DataType(DataType.Text)]
-        [Display(Name = "AddressesName")]
+        [Display(Name = "Addresses Name")]
         public String AddressesName { get; set; }
 
         [DataType(DataType.Text)]
-        [Display(Name = "AddressesNumber")]
+        [Display(Name = "Addresses Number")]
         public String AddressesNumber { get; set; }
 
         [DataType(DataType.Text)]
-        [Display(Name = "ReceiversName")]
+        [Display(Name = "Receivers Name")]
         public String ReceiversName { get; set; }
 
         [DataType(DataType.Text)]
-        [Display(Name = "ReceiversNumber")]
+        [Display(Name = "Receivers Number")]
         public String ReceiversNumber { get; set; }
 
         [StringLength(100, ErrorMessage = "Too long title")]
@@ -34,7 +34,10 @@ namespace BankProjekt.Models
         [Range(0.01, 9999999999)]
         public Decimal Cash { get; set; }
 
+        [Display(Name = "Addresse Balance")]
         public Decimal AddresseBalance { get; set; }
+
+        [Display(Name = "Receiver Balance")]
         public Decimal ReceiverBalance { get; set; }
 
         [DataType(DataType.DateTime)]

@@ -14,6 +14,8 @@ namespace BankProjekt.Controllers
         // GET: Profiles
         public ActionResult Index(int? id)
         {
+
+            ViewBag.definedRecipients = db.DefinedRecipients.Where(dr => dr.Profile.Email.Equals(User.Identity.Name)).ToList();
             if (id != null)
             {
                 var profileW = db.Profiles.Include(p => p.Address).Single(p => p.Id == id);

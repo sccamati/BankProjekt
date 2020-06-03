@@ -3,6 +3,7 @@ using BankProjekt.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -77,6 +78,15 @@ namespace BankProjekt.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    
+                    if (User.IsInRole("Worker") || User.IsInRole("Admin"))
+                    {
+                        return RedirectToAction("CreditsList", "Worker");
+                    }
+                    else if (User.IsInRole("User"))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                     return RedirectToLocal(returnUrl);
 
                 case SignInStatus.LockedOut:
@@ -125,6 +135,7 @@ namespace BankProjekt.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                   
                     return RedirectToLocal(model.ReturnUrl);
 
                 case SignInStatus.LockedOut:
@@ -170,7 +181,9 @@ namespace BankProjekt.Controllers
                     db.Addresses.Add(address);
                     Profile profile = new Profile { Address = address, Name = model.Name, LastName = model.LastName, Email = model.Email, Pesel = model.PESEL, BirthDate = model.BirthDate, MothersName = model.MothersName };
                     db.Profiles.Add(profile);
-                    BankAccount bankAccount = new BankAccount { Number = "1", Balance = 0, Profile = profile };
+                    var number = db.BankAccounts.Max(n => n.Number);
+                    
+                    BankAccount bankAccount = new BankAccount { Number = (Int32.Parse(number)+1).ToString(), Balance = 0, Profile = profile };
                     db.BankAccounts.Add(bankAccount);
                     db.SaveChanges();
                     return RedirectToAction("Index", "Home");

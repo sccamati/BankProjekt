@@ -5,7 +5,7 @@ using System.Web.Mvc;
 
 namespace BankProjekt.Models
 {
-    [Authorize(Roles = "Admin, User")]
+   
     public class Profile
     {
         public int Id { get; set; }
@@ -29,5 +29,6 @@ namespace BankProjekt.Models
 
         public virtual Address Address { get; set; }
         public virtual ICollection<BankAccount> BankAccounts { get; set; }
+        public virtual ICollection<DefinedRecipient> DefinedRecipients { get; set; }
     }
 }

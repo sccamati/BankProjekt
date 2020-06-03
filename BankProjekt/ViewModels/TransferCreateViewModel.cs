@@ -7,7 +7,7 @@ namespace BankProjekt.ViewModels
     [NotMapped]
     public class TransferCreateViewModel
     {
-        public int Id { get; set; }
+        public int Id{ get; set; }
         public String Info { get; set; }
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 1)]

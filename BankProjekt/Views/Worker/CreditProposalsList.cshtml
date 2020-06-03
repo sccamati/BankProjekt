@@ -54,6 +54,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.ProposalStatus)
             </th>
+            <th>
+                @Html.DisplayName("Options")
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -75,9 +78,12 @@
                 </td>
 
                 <td>
-                    @Html.ActionLink("Accept", "CreditProposalAccept", new { id = item.Id }) |
-                    @Html.ActionLink("Reject", "CreditProposalReject", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "CreditProposalDetail", new { id = item.Id })
+                    @if (!item.ProposalStatus.Equals(CreditProposalStatus.Waiting))
+                    {
+                        @Html.ActionLink("Reject |", "CreditProposalReject", new { id = item.Id })
+                        @Html.ActionLink(" Accept |", "CreditProposalAccept", new { id = item.Id })
+                    }
+                    @Html.ActionLink(" Details", "CreditProposalDetail", new { id = item.Id })
                 </td>
             </tr>
         }

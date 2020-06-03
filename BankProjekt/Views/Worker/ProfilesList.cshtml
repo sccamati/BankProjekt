@@ -1,42 +1,46 @@
-﻿@model IEnumerable<BankProjekt.Models.Profile>
+﻿@model PagedList.IPagedList<BankProjekt.Models.Profile>
+@using PagedList.Mvc;
+@using BankProjekt.Models;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
-    ViewBag.Title = "ProfilesList";
+    ViewBag.Title = "Profiles List";
 }
 
-<h2>ProfilesList</h2>
+<h2>Profiles List</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("ProfilesList", "Worker", FormMethod.Get))
 {
 <p>
 
     <div class="form-group">
         @Html.Label("Find by name: ", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextBox("nameSearch")
+            @Html.TextBox("nameS", ViewBag.nameFilter as string, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
         @Html.Label("Find by last name: ", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextBox("lastNameS")
+            @Html.TextBox("lastNameS", ViewBag.lastNameFilter as string, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        @Html.Label("Find by last email: ", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.Label("Find by email: ", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextBox("emailS")
+            @Html.TextBox("emailS", ViewBag.emailFilter as string, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
         @Html.Label("Find by PESEL: ", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextBox("peselS")
+            @Html.TextBox("peselS", ViewBag.peselFilter as string, new { @class = "form-control" })
         </div>
+
     </div>
-
-
     <input type="submit" value="Search" />
+
+
 </p>
 
 }
@@ -44,22 +48,22 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayName("Name")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastName)
+            @Html.DisplayName("Last Name")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Email)
+            @Html.DisplayName("Email")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Pesel)
+            @Html.DisplayName("PESEL")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.BirthDate)
+            @Html.DisplayName("Birth Date")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.MothersName)
+            @Html.DisplayName("Mother Name")
         </th>
         <th></th>
     </tr>
@@ -94,3 +98,8 @@
         </tr>
     }
 </table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("ProfilesList",
+    new { page, nameFilter = ViewBag.nameFilter, lastNameFilter = ViewBag.lastNameFilter, emailFilter = ViewBag.emailFilger, peselFilter = ViewBag.peselFilter }))

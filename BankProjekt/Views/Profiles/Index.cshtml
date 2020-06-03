@@ -1,13 +1,20 @@
 ﻿@model BankProjekt.Models.Profile
-
+@using BankProjekt.Models
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "My Profile";
 }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#DRbutton').click(function () {
+            $('#Recipients').toggle(300);
+        });
+    });
+</script>
 
-<h2>Details</h2>
+<h2>My Profile</h2>
 
 <div>
-    <h4>Profile</h4>
     <hr />
     <dl class="dl-horizontal">
         <h3>Address</h3>
@@ -90,34 +97,67 @@
         <dd>
             @Html.DisplayFor(model => model.MothersName)
         </dd>
-
-        <h3>Bank Accounts</h3>
-        <dd>
-            <table class="table">
-                <tr>
-                    <th>Number</th>
-                    <th>Balance</th>
-                    <th>History</th>
-                </tr>
-                @foreach (var item in Model.BankAccounts)
-                {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Number)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Balance)
-                    </td>
-                    <td>
-                        @Html.ActionLink("History", "Index", "Transfers", new { id = item.Id}, null)
-                    </td>
-                </tr>
-                }
-            </table>
-        </dd>
     </dl>
+    <h3>Bank Accounts</h3>
+    <br />
+    @if (Model.BankAccounts.Count() > 4)
+    {
+        using (Html.BeginForm("Create", "BankAccounts", FormMethod.Get))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                <input type="submit" value="Add new bank account" class="btn btn-default" />
+            </div>
+        }
+    }
+
+    <table class="table">
+        <tr>
+            <th>Number</th>
+            <th>Balance</th>
+            <th>History</th>
+        </tr>
+        @foreach (var item in Model.BankAccounts)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Balance)
+                </td>
+                <td>
+                    @Html.ActionLink("History", "Index", "Transfers", new { id = item.Id }, null)
+                </td>
+            </tr>
+        }
+    </table>
+
+    <div>@ViewBag.Error</div>
+
+    <h3>Definied Recipients</h3>
+
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>Number</th>
+            <th>Options</th>
+        </tr>
+        @foreach (var item in Model.DefinedRecipients)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReceiversName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReceiversNumber)
+                </td>
+                <td>
+                    @Html.ActionLink("Delete |", "Delete", "DefinedRecipients", new { id = item.Id }, null)
+                    @Html.ActionLink(" Edit", "Edit", "DefinedRecipients", new { id = item.Id }, null)
+                </td>
+            </tr>
+        }
+    </table>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
