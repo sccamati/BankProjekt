@@ -78,7 +78,7 @@
                 </td>
 
                 <td>
-                    @if (!item.ProposalStatus.Equals(CreditProposalStatus.Waiting))
+                    @if (item.ProposalStatus.Equals(CreditProposalStatus.Waiting))
                     {
                         @Html.ActionLink("Reject |", "CreditProposalReject", new { id = item.Id })
                         @Html.ActionLink(" Accept |", "CreditProposalAccept", new { id = item.Id })

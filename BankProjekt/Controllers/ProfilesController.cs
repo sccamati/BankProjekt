@@ -40,30 +40,6 @@ namespace BankProjekt.Controllers
             return View(profile);
         }
 
-        // GET: Profiles/Create
-        public ActionResult Create()
-        {
-            ViewBag.Id = new SelectList(db.Addresses, "Id", "HouseNumber");
-            return View();
-        }
-
-        // POST: Profiles/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,LastName,Email,Pesel,BirthDate,MothersName")] Profile profile)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Profiles.Add(profile);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.Id = new SelectList(db.Addresses, "Id", "HouseNumber", profile.Id);
-            return View(profile);
-        }
 
         // GET: Profiles/Edit/5
         public ActionResult Edit(int? id)
@@ -77,7 +53,6 @@ namespace BankProjekt.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Id = new SelectList(db.Addresses, "Id", "HouseNumber", profile.Id);
             return View(profile);
         }
 
@@ -94,8 +69,38 @@ namespace BankProjekt.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.Id = new SelectList(db.Addresses, "Id", "HouseNumber", profile.Id);
             return View(profile);
+        }
+
+        // GET: Profiles/Edit/5
+        public ActionResult EditAddress(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Address address = db.Profiles.Find(id).Address;
+            if (address == null)
+            {
+                return HttpNotFound();
+            }
+            return View(address);
+        }
+
+        // POST: Profiles/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditAddress([Bind(Include = "Id, HouseNumber, Street, PostCode, City")] Address address)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(address).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(address);
         }
 
         // GET: Profiles/Delete/5

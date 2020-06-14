@@ -6,7 +6,6 @@
         public int ProfileId { get; set; }
         public string ReceiversName { get; set; }
         public string ReceiversNumber { get; set; }
-
         public virtual Profile Profile { get; set; }
     }
 }

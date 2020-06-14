@@ -1,10 +1,41 @@
 ﻿@model IEnumerable<BankProjekt.Models.Transfer>
+@using BankProjekt.Models
 @{
     ViewBag.Title = "Home";
 }
 
 <h2>Welcome to Super Bank</h2>
+<hr />
+<br />
+<h4>Your Accounts</h4>
+<table class="table">
+    <tr>
+        <th>
+            Number
+        </th>
+        <th>
+            Balance
+        </th>
+    </tr>
+    @foreach (var account in (List<BankAccount>)ViewBag.BankAccounts)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => account.Number)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => account.Balance)
+    </td>
+</tr>
+        
+    }
+</table>
 
+
+<hr />
+<br />
+<h4>Last Transfers</h4>
+@Html.ActionLink("Check All", "Index", "Transfers")
 <table class="table">
     <tr>
         <th>
@@ -22,7 +53,6 @@
         <th>
             Title
         </th>
-        </th>
         <th>
             Cash
         </th>
@@ -31,6 +61,7 @@
         </th>
 
     </tr>
+
 
     @foreach (var item in Model)
     {

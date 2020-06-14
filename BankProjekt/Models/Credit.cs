@@ -13,7 +13,14 @@ namespace BankProjekt.Models
         public int NumberOfMonths { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public CreditStatus Status { get; set; }
 
         public virtual BankAccount BankAccount { get; set; }
+    }
+
+    public enum CreditStatus
+    {
+        Active,
+        Repayed
     }
 }

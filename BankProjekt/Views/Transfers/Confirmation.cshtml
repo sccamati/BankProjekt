@@ -1,164 +1,165 @@
 ﻿@model BankProjekt.Models.Transfer
 @using BankProjekt.Models;
+@Styles.Render("~/Content/PDF.css")
 @{
     ViewBag.Title = "Confirmation";
 }
 
-    <h2>Confirmation</h2>
+<h2>Confirmation</h2>
 
 <div>
     <hr />
-    
 
-        @foreach (var number in (IEnumerable<String>)ViewBag.BankNumbers)
+
+    @foreach (var number in (IEnumerable<String>)ViewBag.BankNumbers)
+    {
+        if (Model.TransferType.ToString().Equals("Transfer") && Model.ReceiversNumber.Equals(number))
         {
-            if (Model.TransferType.ToString().Equals("Transfer") && Model.ReceiversNumber.Equals(number))
-            {
-                <div class="confirmation-countainer">
-                    <div class="name">
-                        @Html.DisplayNameFor(model => model.AddressesName)
-                    </div>
-                    <div class="value">
-                        @Html.DisplayFor(model => model.AddressesName)
-                    </div>
+            <div class="confirmation-countainer">
+                <div class="name">
+                    @Html.DisplayNameFor(model => model.AddressesName)
                 </div>
+                <div class="value">
+                    @Html.DisplayFor(model => model.AddressesName)
+                </div>
+            </div>
 
-                <div class="confirmation-countainer">
-                    <div class="name">
-                        @Html.DisplayNameFor(model => model.AddressesNumber)
-                    </div>
-                    <div class="value">
-                        @Html.DisplayFor(model => model.AddressesNumber)
-                    </div>
+            <div class="confirmation-countainer">
+                <div class="name">
+                    @Html.DisplayNameFor(model => model.AddressesNumber)
                 </div>
+                <div class="value">
+                    @Html.DisplayFor(model => model.AddressesNumber)
+                </div>
+            </div>
 
 
 
-                <div class="confirmation-countainer">
-                    <div class="name">
-                        @Html.DisplayNameFor(model => model.ReceiverBalance)
-                    </div>
-                    <div class="value">
-                        @Html.DisplayFor(model => model.ReceiverBalance)
-                    </div>
+            <div class="confirmation-countainer">
+                <div class="name">
+                    @Html.DisplayNameFor(model => model.ReceiverBalance)
                 </div>
-                break;
-            }
-            else if (Model.TransferType.ToString().Equals("Transfer") && Model.AddressesNumber.Equals(number))
-            {
-                <div class="confirmation-countainer">
-                    <div class="name">
-                        @Html.DisplayNameFor(model => model.ReceiversName)
-                    </div>
-                    <div class="value">
-                        @Html.DisplayFor(model => model.ReceiversName)
-                    </div>
+                <div class="value">
+                    @Html.DisplayFor(model => model.ReceiverBalance)
                 </div>
-
-                <div class="confirmation-countainer">
-                    <div class="name">
-                        @Html.DisplayNameFor(model => model.ReceiversNumber)
-                    </div>
-                    <div class="value">
-                        @Html.DisplayFor(model => model.ReceiversNumber)
-                    </div>
-                </div>
-
-                <div class="confirmation-countainer">
-                    <div class="name">
-                        @Html.DisplayNameFor(model => model.AddresseBalance)
-                    </div>
-                    <div class="value">
-                        @Html.DisplayFor(model => model.AddresseBalance)
-                    </div>
-                </div>
-                break;
-            }
-
-            else if (Model.TransferType.ToString().Equals("Payment") || Model.TransferType.ToString().Equals("Credit"))
-            {
-                <div class="confirmation-countainer">
-                    <div class="name">
-                        @Html.DisplayNameFor(model => model.ReceiversName)
-                    </div>
-                    <div class="value">
-                        @Html.DisplayFor(model => model.ReceiversName)
-                    </div>
-                </div>
-                <div class="confirmation-countainer">
-                    <div class="name">
-                        @Html.DisplayNameFor(model => model.ReceiversNumber)
-                    </div>
-                    <div class="value">
-                        @Html.DisplayFor(model => model.ReceiversNumber)
-                    </div>
-                </div>
-
-                <div class="confirmation-countainer">
-                    <div class="name">
-                        @Html.DisplayNameFor(model => model.ReceiverBalance)
-                    </div>
-                    <div class="value">
-                        @Html.DisplayFor(model => model.ReceiverBalance)
-                    </div>
-                </div>
-                break;
-            }
-            else if (Model.TransferType.ToString().Equals("PayOff") || Model.TransferType.ToString().Equals("CreditPayment"))
-            {
-                <div class="confirmation-countainer">
-                    <div class="name">
-                        @Html.DisplayNameFor(model => model.AddressesName)
-                    </div>
-                    <div class="value">
-                        @Html.DisplayFor(model => model.AddressesName)
-                    </div>
-                </div>
-                <div class="confirmation-countainer">
-                    <div class="name">
-                        @Html.DisplayNameFor(model => model.AddressesNumber)
-                    </div>
-                    <div class="value">
-                        @Html.DisplayFor(model => model.AddressesNumber)
-                    </div>
-                </div>
-
-                <div class="confirmation-countainer">
-                    <div class="name">
-                        @Html.DisplayNameFor(model => model.AddresseBalance)
-                    </div>
-                    <div class="value">
-                        @Html.DisplayFor(model => model.AddresseBalance)
-                    </div>
-                </div>
-                break;
-            }
+            </div>
+            break;
         }
-        <div class="confirmation-countainer">
-            <div class="name">
-                @Html.DisplayNameFor(model => model.Cash)
+        else if (Model.TransferType.ToString().Equals("Transfer") && Model.AddressesNumber.Equals(number))
+        {
+            <div class="confirmation-countainer">
+                <div class="name">
+                    @Html.DisplayNameFor(model => model.ReceiversName)
+                </div>
+                <div class="value">
+                    @Html.DisplayFor(model => model.ReceiversName)
+                </div>
             </div>
-            <div class="value">
-                @Html.DisplayFor(model => model.Cash)
-            </div>
-        </div>
-        
-        <div class="confirmation-countainer">
-            <div class="name">
-                @Html.DisplayNameFor(model => model.Title)
-            </div>
-            <div class="value">
-                @Html.DisplayFor(model => model.Title)
-            </div>
-        </div>
 
-        <div class="confirmation-countainer">
-            <div class="name">
-                @Html.DisplayNameFor(model => model.Date)
+            <div class="confirmation-countainer">
+                <div class="name">
+                    @Html.DisplayNameFor(model => model.ReceiversNumber)
+                </div>
+                <div class="value">
+                    @Html.DisplayFor(model => model.ReceiversNumber)
+                </div>
             </div>
-            <div class="value">
-                @Html.DisplayFor(model => model.Date)
+
+            <div class="confirmation-countainer">
+                <div class="name">
+                    @Html.DisplayNameFor(model => model.AddresseBalance)
+                </div>
+                <div class="value">
+                    @Html.DisplayFor(model => model.AddresseBalance)
+                </div>
             </div>
+            break;
+        }
+
+        else if (Model.TransferType.ToString().Equals("Payment") || Model.TransferType.ToString().Equals("Credit"))
+        {
+            <div class="confirmation-countainer">
+                <div class="name">
+                    @Html.DisplayNameFor(model => model.ReceiversName)
+                </div>
+                <div class="value">
+                    @Html.DisplayFor(model => model.ReceiversName)
+                </div>
+            </div>
+            <div class="confirmation-countainer">
+                <div class="name">
+                    @Html.DisplayNameFor(model => model.ReceiversNumber)
+                </div>
+                <div class="value">
+                    @Html.DisplayFor(model => model.ReceiversNumber)
+                </div>
+            </div>
+
+            <div class="confirmation-countainer">
+                <div class="name">
+                    @Html.DisplayNameFor(model => model.ReceiverBalance)
+                </div>
+                <div class="value">
+                    @Html.DisplayFor(model => model.ReceiverBalance)
+                </div>
+            </div>
+            break;
+        }
+        else if (Model.TransferType.ToString().Equals("PayOff") || Model.TransferType.ToString().Equals("CreditPayment"))
+        {
+            <div class="confirmation-countainer">
+                <div class="name">
+                    @Html.DisplayNameFor(model => model.AddressesName)
+                </div>
+                <div class="value">
+                    @Html.DisplayFor(model => model.AddressesName)
+                </div>
+            </div>
+            <div class="confirmation-countainer">
+                <div class="name">
+                    @Html.DisplayNameFor(model => model.AddressesNumber)
+                </div>
+                <div class="value">
+                    @Html.DisplayFor(model => model.AddressesNumber)
+                </div>
+            </div>
+
+            <div class="confirmation-countainer">
+                <div class="name">
+                    @Html.DisplayNameFor(model => model.AddresseBalance)
+                </div>
+                <div class="value">
+                    @Html.DisplayFor(model => model.AddresseBalance)
+                </div>
+            </div>
+            break;
+        }
+    }
+    <div class="confirmation-countainer">
+        <div class="name">
+            @Html.DisplayNameFor(model => model.Cash)
         </div>
-   
+        <div class="value">
+            @Html.DisplayFor(model => model.Cash)
+        </div>
+    </div>
+
+    <div class="confirmation-countainer">
+        <div class="name">
+            @Html.DisplayNameFor(model => model.Title)
+        </div>
+        <div class="value">
+            @Html.DisplayFor(model => model.Title)
+        </div>
+    </div>
+
+    <div class="confirmation-countainer">
+        <div class="name">
+            @Html.DisplayNameFor(model => model.Date)
+        </div>
+        <div class="value">
+            @Html.DisplayFor(model => model.Date)
+        </div>
+    </div>
+
 </div>

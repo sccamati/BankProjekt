@@ -11,9 +11,9 @@
         });
     });
 </script>
-
 <h2>My Profile</h2>
-
+@Html.ActionLink("Edit Profile", "Edit", new { id = Model.Id })
+@Html.ActionLink("Edit Address", "EditAddress", new { id = Model.Id })
 <div>
     <hr />
     <dl class="dl-horizontal">

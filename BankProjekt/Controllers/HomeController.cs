@@ -14,15 +14,16 @@ namespace BankProjekt.Controllers
         {
             var transfers = db.Transfers.Select(t => t);
             var bankAccounts = db.Profiles.Single(u => u.Email == User.Identity.Name).BankAccounts;
+
+            ViewBag.BankAccounts = bankAccounts.ToList();
             List<Transfer> list = new List<Transfer>();
 
             foreach (var item in bankAccounts)
             {
                 list.AddRange(transfers.Where(t => t.AddressesNumber.Equals(item.Number) || t.ReceiversNumber.Equals(item.Number)));
             }
-            list.OrderByDescending(t => t.Date);
             ViewBag.BankNumbers = bankAccounts.Select(b => b.Number);
-            return View(list.Take(5));
+            return View(list.Take(5).OrderBy(t => t.Date));
         }
 
         public ActionResult Index()

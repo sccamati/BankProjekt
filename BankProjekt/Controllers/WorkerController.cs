@@ -1,8 +1,11 @@
 ﻿using BankProjekt.DAL;
 using BankProjekt.Helpers;
 using BankProjekt.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using PagedList;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -91,9 +94,24 @@ namespace BankProjekt.Controllers
 
             profiles = profiles.OrderBy(p => p.LastName);
 
+            List<Profile> list = new List<Profile>();
+            var userManager = new UserManager<ApplicationUser>(
+                new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var roleManager = new RoleManager<IdentityRole>(
+               new RoleStore<IdentityRole>(new ApplicationDbContext()));
+            var role = roleManager.FindByName("User");
+            foreach (var user in profiles)
+            {
+
+                if(userManager.FindByName(user.Email).Roles.Any(r => r.RoleId.Equals(role.Id)))
+                {
+                    list.Add(user);
+                }
+            }
+
             int pageSize = 3;
             int pageNumber = (page ?? 1);
-            return View(profiles.ToPagedList(pageNumber, pageSize));
+            return View(list.ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult CreditProposalDetail(int? id)
@@ -132,7 +150,8 @@ namespace BankProjekt.Controllers
                     NumberOfMonthsLeft = cr.NumberOfMonths,
                     NumberOfMonths = cr.NumberOfMonths,
                     StartDate = DateTime.Now,
-                    EndDate = DateTime.Now.AddMonths(cr.NumberOfMonths)
+                    EndDate = DateTime.Now.AddMonths(cr.NumberOfMonths),
+                    Status = CreditStatus.Active
                 };
                 cr.ProposalStatus = CreditProposalStatus.Approved;
                 db.Credits.Add(credit);

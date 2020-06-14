@@ -225,15 +225,14 @@ namespace BankProjekt.Controllers
                     db.Transfers.Add(transfer);
                     db.SaveChanges();
 
-                    var DRset = db.DefinedRecipients.Single(df => df.ReceiversName.Equals(transferCreate.ReceiversName) && df.ReceiversNumber.Equals(transferCreate.ReceiversNumber));
-                    if (DRset == null)
+                    if (db.DefinedRecipients.Any(df => df.ReceiversName.Equals(transferCreate.ReceiversName) && df.ReceiversNumber.Equals(transferCreate.ReceiversNumber)))
                     {
-                        DefinedRecipient definedRecipient = new DefinedRecipient { ProfileId = bankAccount.ProfileId, ReceiversName = transfer.ReceiversName, ReceiversNumber = transfer.ReceiversNumber };
-                        return RedirectToAction("DefinedRecipient", definedRecipient);
+                        return RedirectToAction("Index");
                     }
                     else
                     {
-                        return RedirectToAction("Index");
+                        DefinedRecipient definedRecipient = new DefinedRecipient { ProfileId = bankAccount.ProfileId, ReceiversName = transfer.ReceiversName, ReceiversNumber = transfer.ReceiversNumber };
+                        return RedirectToAction("DefinedRecipient", definedRecipient);
                     }
 
                 }

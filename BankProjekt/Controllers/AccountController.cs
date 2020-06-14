@@ -1,6 +1,7 @@
 ﻿using BankProjekt.DAL;
 using BankProjekt.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
@@ -77,17 +78,19 @@ namespace BankProjekt.Controllers
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: true);
             switch (result)
             {
-                case SignInStatus.Success:
-                    
-                    if (User.IsInRole("Worker") || User.IsInRole("Admin"))
-                    {
-                        return RedirectToAction("CreditsList", "Worker");
-                    }
-                    else if (User.IsInRole("User"))
-                    {
+                case SignInStatus.Success: {
+
+                        if (hasRole(model.Email, "Worker") || hasRole(model.Email, "Admin"))
+                        {
+                            return RedirectToAction("CreditProposalsList", "Worker");
+                        }
+                        else if (hasRole(model.Email, "User"))
+                        {
+                            return RedirectToAction("UserIndex", "Home");
+                        }
                         return RedirectToAction("Index", "Home");
                     }
-                    return RedirectToLocal(returnUrl);
+                    
 
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -100,6 +103,22 @@ namespace BankProjekt.Controllers
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
             }
+        }
+
+        private bool hasRole(string email, string role)
+        {
+            var userManager = new UserManager<ApplicationUser>(
+            new UserStore<ApplicationUser>(new ApplicationDbContext()));
+
+            var roleManager = new RoleManager<IdentityRole>(
+            new RoleStore<IdentityRole>(new ApplicationDbContext()));
+
+
+            if(userManager.FindByName(email).Roles.Any(u => u.RoleId.Equals(roleManager.FindByName(role).Id)))
+            {
+                return true;
+            }
+            return false;
         }
 
         //
@@ -169,13 +188,10 @@ namespace BankProjekt.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    await UserManager.AddToRoleAsync(user.Id, "User");
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                   
                     BankContext db = new BankContext();
                     Address address = new Address { HouseNumber = model.HouseNumber, Street = model.Street, PostCode = model.PostalCode, City = model.City };
                     db.Addresses.Add(address);

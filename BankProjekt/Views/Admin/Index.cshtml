@@ -1,0 +1,112 @@
+﻿@model PagedList.IPagedList<BankProjekt.Models.Profile>
+@using PagedList.Mvc;
+@using BankProjekt.Models;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Workers List";
+}
+
+<h2>Profiles List</h2>
+
+@using (Html.BeginForm("Index", "Admin", FormMethod.Get))
+{
+<p>
+
+    <div class="form-group">
+        @Html.Label("Find by name: ", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("nameS", ViewBag.nameFilter as string, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Find by last name: ", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("lastNameS", ViewBag.lastNameFilter as string, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Find by email: ", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("emailS", ViewBag.emailFilter as string, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Find by PESEL: ", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("peselS", ViewBag.peselFilter as string, new { @class = "form-control" })
+        </div>
+
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Filter By User Type", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("UserType", (IEnumerable<SelectListItem>)ViewBag.BankAccounts, "All", new { @class = "form-control" })
+        </div>
+    </div>
+    <input type="submit" value="Search" />
+
+
+</p>
+
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Name")
+        </th>
+        <th>
+            @Html.DisplayName("Last Name")
+        </th>
+        <th>
+            @Html.DisplayName("Email")
+        </th>
+        <th>
+            @Html.DisplayName("PESEL")
+        </th>
+        <th>
+            @Html.DisplayName("Birth Date")
+        </th>
+        <th>
+            @Html.DisplayName("Mother Name")
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pesel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BirthDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MothersName)
+            </td>
+            <td>
+                @Html.ActionLink("Credit Proposals", "Index", "CreditProposals", new { id = item.Id }, null) |
+                @Html.ActionLink("Profile", "Index", "Profiles", new { id = item.Id }, null) |
+                @Html.ActionLink("Credits", "Index", "Credits", new { id = item.Id }, null) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, nameFilter = ViewBag.nameFilter, lastNameFilter = ViewBag.lastNameFilter, emailFilter = ViewBag.emailFilger, peselFilter = ViewBag.peselFilter }))
