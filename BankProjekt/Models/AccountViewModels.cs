@@ -66,64 +66,65 @@ namespace BankProjekt.Models
 
     public class RegisterViewModel
     {
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage ="Email field is required")]
+        [EmailAddress(ErrorMessage = "This is  not a valid email address")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "This field is required")]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
+        [Required(ErrorMessage = "This field is required")]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "This field is required")]
         [DataType(DataType.Text)]
         [Display(Name = "Name")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "This field is required")]
         [DataType(DataType.Text)]
-        [Display(Name = "LastName")]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "This field is required")]
         [StringLength(11, ErrorMessage = "The {0} must be {2} characters long.", MinimumLength = 11)]
         [DataType(DataType.Text)]
         [Display(Name = "PESEL")]
         public string PESEL { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "This field is required")]
         [DataType(DataType.DateTime)]
-        [Display(Name = "BirthDate")]
+        [Display(Name = "Birth Date")]
         public DateTime BirthDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "This field is required")]
         [DataType(DataType.Text)]
-        [Display(Name = "MothersName")]
+        [Display(Name = "Mothers Name")]
         public string MothersName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "This field is required")]
         [DataType(DataType.Text)]
-        [Display(Name = "HouseNumber")]
+        [Display(Name = "House Number")]
         public string HouseNumber { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "This field is required")]
         [DataType(DataType.Text)]
         [Display(Name = "Street")]
         public string Street { get; set; }
 
-        [Required]
-        [DataType(DataType.PostalCode)]
-        [Display(Name = "PostalCode")]
+        [Required(ErrorMessage = "This field is required")]
+        [DataType(DataType.PostalCode, ErrorMessage = "This is not valid postal code")]
+        [Display(Name = "Postal Code")]
         public string PostalCode { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "This field is required")]
         [DataType(DataType.Text)]
         [Display(Name = "City")]
         public string City { get; set; }

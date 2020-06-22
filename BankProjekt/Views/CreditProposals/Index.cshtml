@@ -6,37 +6,37 @@
 
 <h2>Credit Proposals List</h2>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Cash)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NumberOfMonths)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ProposalStatus)
-        </th>
-        <th></th>
-    </tr>
+<table class="table table-striped">
+    <thead style="background-color: lightblue">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Cash)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberOfMonths)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProposalStatus)
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
 
-    @foreach (var item in Model) {
-    <tr>
-
-        <td>
-            @Html.DisplayFor(modelItem => item.Cash)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NumberOfMonths)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ProposalStatus)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cash)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberOfMonths)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProposalStatus)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+                </td>
+            </tr>
+        }
 </table>

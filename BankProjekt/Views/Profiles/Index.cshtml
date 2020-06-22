@@ -1,16 +1,9 @@
 ﻿@model BankProjekt.Models.Profile
-@using BankProjekt.Models
+
 @{
     ViewBag.Title = "My Profile";
 }
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('#DRbutton').click(function () {
-            $('#Recipients').toggle(300);
-        });
-    });
-</script>
 <h2>My Profile</h2>
 @Html.ActionLink("Edit Profile", "Edit", new { id = Model.Id })
 @Html.ActionLink("Edit Address", "EditAddress", new { id = Model.Id })
@@ -18,14 +11,14 @@
     <hr />
     <dl class="dl-horizontal">
         <h3>Address</h3>
-        <dt>
+        <dt class="pull-left">
             @Html.DisplayNameFor(model => model.Address.Street)
         </dt>
 
-        <dd>
+        <dd >
             @Html.DisplayFor(model => model.Address.Street)
         </dd>
-
+        <hr />
         <dt>
             @Html.DisplayNameFor(model => model.Address.HouseNumber)
         </dt>
@@ -33,7 +26,7 @@
         <dd>
             @Html.DisplayFor(model => model.Address.HouseNumber)
         </dd>
-
+        <hr />
         <dt>
             @Html.DisplayNameFor(model => model.Address.PostCode)
         </dt>
@@ -41,7 +34,7 @@
         <dd>
             @Html.DisplayFor(model => model.Address.PostCode)
         </dd>
-
+        <hr />
         <dt>
             @Html.DisplayNameFor(model => model.Address.City)
         </dt>
@@ -49,6 +42,7 @@
         <dd>
             @Html.DisplayFor(model => model.Address.City)
         </dd>
+        <hr />
         <h3>Info</h3>
         <dt>
             @Html.DisplayNameFor(model => model.Name)
@@ -57,7 +51,7 @@
         <dd>
             @Html.DisplayFor(model => model.Name)
         </dd>
-
+        <hr />
         <dt>
             @Html.DisplayNameFor(model => model.LastName)
         </dt>
@@ -65,7 +59,7 @@
         <dd>
             @Html.DisplayFor(model => model.LastName)
         </dd>
-
+        <hr />
         <dt>
             @Html.DisplayNameFor(model => model.Email)
         </dt>
@@ -73,7 +67,7 @@
         <dd>
             @Html.DisplayFor(model => model.Email)
         </dd>
-
+        <hr />
         <dt>
             @Html.DisplayNameFor(model => model.Pesel)
         </dt>
@@ -81,7 +75,7 @@
         <dd>
             @Html.DisplayFor(model => model.Pesel)
         </dd>
-
+        <hr />
         <dt>
             @Html.DisplayNameFor(model => model.BirthDate)
         </dt>
@@ -89,7 +83,7 @@
         <dd>
             @Html.DisplayFor(model => model.BirthDate)
         </dd>
-
+        <hr />
         <dt>
             @Html.DisplayNameFor(model => model.MothersName)
         </dt>
@@ -97,10 +91,11 @@
         <dd>
             @Html.DisplayFor(model => model.MothersName)
         </dd>
+        <hr />
     </dl>
     <h3>Bank Accounts</h3>
     <br />
-    @if (Model.BankAccounts.Count() > 4)
+    @if (Model.BankAccounts.Count() < 4)
     {
         using (Html.BeginForm("Create", "BankAccounts", FormMethod.Get))
         {
@@ -112,52 +107,61 @@
         }
     }
 
-    <table class="table">
-        <tr>
-            <th>Number</th>
-            <th>Balance</th>
-            <th>History</th>
-        </tr>
-        @foreach (var item in Model.BankAccounts)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Number)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Balance)
-                </td>
-                <td>
-                    @Html.ActionLink("History", "Index", "Transfers", new { id = item.Id }, null)
-                </td>
-            </tr>
-        }
-    </table>
+   
+        <table class="table table-striped">
+            <thead style="background-color: lightblue">
+                <tr>
+                    <th>Number</th>
+                    <th>Balance</th>
+                    <th>History</th>
+                </tr>
+            </thead>
+            @foreach (var item in Model.BankAccounts)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Number)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Balance)
+                    </td>
+                    <td>
+                        @Html.ActionLink("History", "Index", "Transfers", new { id = item.Id }, null)
+                    </td>
+                </tr>
+            }
+        </table>
 
-    <div>@ViewBag.Error</div>
+        <div>@ViewBag.Error</div>
+    
 
-    <h3>Definied Recipients</h3>
+    @if (Model.DefinedRecipients.Count != 0)
+    {
+        <h3>Definied Recipients</h3>
 
-    <table class="table">
-        <tr>
-            <th>Name</th>
-            <th>Number</th>
-            <th>Options</th>
-        </tr>
-        @foreach (var item in Model.DefinedRecipients)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ReceiversName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ReceiversNumber)
-                </td>
-                <td>
-                    @Html.ActionLink("Delete |", "Delete", "DefinedRecipients", new { id = item.Id }, null)
-                    @Html.ActionLink(" Edit", "Edit", "DefinedRecipients", new { id = item.Id }, null)
-                </td>
-            </tr>
-        }
-    </table>
+        <table class="table table-striped">
+            <thead style="background-color: lightblue">
+                <tr>
+                    <th>Name</th>
+                    <th>Number</th>
+                    <th>Options</th>
+                </tr>
+                </thead>
+                @foreach (var item in Model.DefinedRecipients)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ReceiversName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ReceiversNumber)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Delete |", "Delete", "DefinedRecipients", new { id = item.Id }, null)
+                            @Html.ActionLink(" Edit", "Edit", "DefinedRecipients", new { id = item.Id }, null)
+                        </td>
+                    </tr>
+                }
+        </table>
+    }
 </div>

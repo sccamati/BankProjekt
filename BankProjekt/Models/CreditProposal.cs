@@ -23,7 +23,6 @@ namespace BankProjekt.Models
 
         public CreditProposalStatus ProposalStatus { get; set; }
 
-        public String Picture { get; set; }
         public virtual BankAccount BankAccount { get; set; }
     }
 

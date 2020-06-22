@@ -174,10 +174,6 @@ namespace BankProjekt.Controllers
         public ActionResult Create([Bind(Include = "Id, ReceiversName, ReceiversNumber, Title, Cash, Date")] TransferCreateViewModel transferCreate)
         {
             ViewBag.definedRecipients = db.DefinedRecipients.Where(dr => dr.Profile.Email.Equals(User.Identity.Name)).ToList();
-
-            
-
-
             var bankAccounts = db.Profiles.Single(u => u.Email == User.Identity.Name).BankAccounts.Select(b => new
             {
                 b.Id,

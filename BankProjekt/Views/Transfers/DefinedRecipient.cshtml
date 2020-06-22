@@ -15,7 +15,6 @@
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
-        @Html.LabelFor(model => model.ProfileId, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.ProfileId, new { htmlAttributes = new { @class = "form-control", type = "hidden" } })
             @Html.ValidationMessageFor(model => model.ProfileId, "", new { @class = "text-danger" })
@@ -23,7 +22,6 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.ReceiversName, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.ReceiversName, new { htmlAttributes = new { @class = "form-control", type = "hidden" } })
             @Html.ValidationMessageFor(model => model.ReceiversName, "", new { @class = "text-danger" })
@@ -31,7 +29,6 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.ReceiversNumber, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.ReceiversNumber, new { htmlAttributes = new { @class = "form-control", type = "hidden" } })
             @Html.ValidationMessageFor(model => model.ReceiversNumber, "", new { @class = "text-danger" })

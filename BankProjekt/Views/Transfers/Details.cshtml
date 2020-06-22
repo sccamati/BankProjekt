@@ -15,111 +15,115 @@
         {
             if (Model.TransferType.ToString().Equals("Transfer") && Model.ReceiversNumber.Equals(number))
             {
-        <dt>
-            @Html.DisplayNameFor(model => model.AddressesName)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.AddressesName)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.AddressesName)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.AddressesName)
+                </dd>
+                <hr />
+                <dt>
+                    @Html.DisplayNameFor(model => model.AddressesNumber)
+                </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.AddressesNumber)
-        </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.AddressesNumber)
+                </dd>
+                <hr />
+                <dt>
+                    @Html.DisplayNameFor(model => model.ReceiverBalance)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.AddressesNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ReceiverBalance)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ReceiverBalance)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.ReceiverBalance)
+                </dd>
+                <hr />
                 break;
             }
             else if (Model.TransferType.ToString().Equals("Transfer") && Model.AddressesNumber.Equals(number))
             {
-        <dt>
-            @Html.DisplayNameFor(model => model.ReceiversName)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ReceiversName)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ReceiversName)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.ReceiversName)
+                </dd>
+                <hr />
+                <dt>
+                    @Html.DisplayNameFor(model => model.ReceiversNumber)
+                </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ReceiversNumber)
-        </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ReceiversNumber)
+                </dd>
+                <hr />
+                <dt>
+                    @Html.DisplayNameFor(model => model.AddresseBalance)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ReceiversNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AddresseBalance)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AddresseBalance)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.AddresseBalance)
+                </dd>
+                <hr />
                 break;
             }
 
             else if (Model.TransferType.ToString().Equals("Payment") || Model.TransferType.ToString().Equals("Credit"))
             {
-        <dt>
-            @Html.DisplayNameFor(model => model.ReceiversName)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ReceiversName)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ReceiversName)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.ReceiversName)
+                </dd>
+                <hr />
+                <dt>
+                    @Html.DisplayNameFor(model => model.ReceiversNumber)
+                </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ReceiversNumber)
-        </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ReceiversNumber)
+                </dd>
+                <hr />
+                <dt>
+                    @Html.DisplayNameFor(model => model.ReceiverBalance)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ReceiversNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ReceiverBalance)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ReceiverBalance)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.ReceiverBalance)
+                </dd>
+                <hr />
                 break;
             }
             else if (Model.TransferType.ToString().Equals("PayOff") || Model.TransferType.ToString().Equals("CreditPayment"))
             {
-        <dt>
-            @Html.DisplayNameFor(model => model.AddressesName)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.AddressesName)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.AddressesName)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.AddressesName)
+                </dd>
+                <hr />
+                <dt>
+                    @Html.DisplayNameFor(model => model.AddressesNumber)
+                </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.AddressesNumber)
-        </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.AddressesNumber)
+                </dd>
+                <hr />
+                <dt>
+                    @Html.DisplayNameFor(model => model.AddresseBalance)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.AddressesNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AddresseBalance)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AddresseBalance)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.AddresseBalance)
+                </dd>
+                <hr />
                 break;
             }
         }
@@ -130,7 +134,7 @@
         <dd>
             @Html.DisplayFor(model => model.Cash)
         </dd>
-
+        <hr />
         <dt>
             @Html.DisplayNameFor(model => model.Title)
         </dt>
@@ -138,7 +142,7 @@
         <dd>
             @Html.DisplayFor(model => model.Title)
         </dd>
-
+        <hr />
         <dt>
             @Html.DisplayNameFor(model => model.Date)
         </dt>
@@ -146,5 +150,6 @@
         <dd>
             @Html.DisplayFor(model => model.Date)
         </dd>
+        <hr />
     </dl>
 </div>

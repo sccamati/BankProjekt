@@ -8,27 +8,29 @@
 <hr />
 <br />
 <h4>Your Accounts</h4>
-<table class="table">
-    <tr>
-        <th>
-            Number
-        </th>
-        <th>
-            Balance
-        </th>
-    </tr>
-    @foreach (var account in (List<BankAccount>)ViewBag.BankAccounts)
-    {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => account.Number)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => account.Balance)
-    </td>
-</tr>
-        
-    }
+<table class="table table-striped">
+    <thead style="background-color: lightblue">
+        <tr>
+            <th>
+                Number
+            </th>
+            <th>
+                Balance
+            </th>
+        </tr>
+        </thead>
+        @foreach (var account in (List<BankAccount>)ViewBag.BankAccounts)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => account.Number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => account.Balance)
+                </td>
+            </tr>
+
+        }
 </table>
 
 
@@ -36,32 +38,33 @@
 <br />
 <h4>Last Transfers</h4>
 @Html.ActionLink("Check All", "Index", "Transfers")
-<table class="table">
-    <tr>
-        <th>
-            Type
-        </th>
-        <th>
-            To/From
-        </th>
-        <th>
-            Number
-        </th>
-        <th>
-            Balance
-        </th>
-        <th>
-            Title
-        </th>
-        <th>
-            Cash
-        </th>
-        <th>
-            Date
-        </th>
+<table class="table table-striped">
+    <thead style="background-color: lightblue">
+        <tr>
+            <th>
+                Type
+            </th>
+            <th>
+                To/From
+            </th>
+            <th>
+                Number
+            </th>
+            <th>
+                Balance
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Cash
+            </th>
+            <th>
+                Date
+            </th>
 
-    </tr>
-
+        </tr>
+    </thead>
 
     @foreach (var item in Model)
     {

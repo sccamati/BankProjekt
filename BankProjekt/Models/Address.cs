@@ -11,7 +11,7 @@ namespace BankProjekt.Models
 
         [Required]
         [DataType(DataType.Text)]
-        [Display(Name = "HouseNumber")]
+        [Display(Name = "House Number")]
         public String HouseNumber { get; set; }
 
         [Required]
@@ -21,7 +21,7 @@ namespace BankProjekt.Models
 
         [Required]
         [DataType(DataType.PostalCode)]
-        [Display(Name = "PostCode")]
+        [Display(Name = "Post Code")]
         public String PostCode { get; set; }
 
         [Required]

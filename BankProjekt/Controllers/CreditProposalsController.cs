@@ -73,13 +73,7 @@ namespace BankProjekt.Controllers
 
             if (ModelState.IsValid)
             {
-                HttpPostedFileBase file = Request.Files["File"];
-                if (file != null && file.ContentLength > 0)
-                {
-                    creditProposal.Picture = file.FileName;
-                    string filepath = Path.Combine(Server.MapPath("~/Pictures"), file.FileName);
-                    file.SaveAs(filepath);
-                }
+                
 
                 creditProposal.ProposalStatus = CreditProposalStatus.Waiting;
                 db.CreditProposals.Add(creditProposal);
@@ -113,13 +107,6 @@ namespace BankProjekt.Controllers
         {
             if (ModelState.IsValid)
             {
-                HttpPostedFileBase file = Request.Files["File"];
-                if (file != null && file.ContentLength > 0)
-                {
-                    creditProposal.Picture = file.FileName;
-                    string filepath = Path.Combine(Server.MapPath("~/Pictures"), file.FileName);
-                    file.SaveAs(filepath);
-                }
                 db.Entry(creditProposal).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

@@ -619,13 +619,10 @@
     <Content Include="Views\Profiles\Details.cshtml" />
     <Content Include="Views\Profiles\Edit.cshtml" />
     <Content Include="Views\Profiles\Index.cshtml" />
-    <Content Include="Views\Transfers\Delete.cshtml" />
     <Content Include="Views\Transfers\Details.cshtml" />
     <Content Include="Views\Transfers\Index.cshtml" />
     <Content Include="Views\CreditProposals\Create.cshtml" />
-    <Content Include="Views\CreditProposals\Delete.cshtml" />
     <Content Include="Views\CreditProposals\Details.cshtml" />
-    <Content Include="Views\CreditProposals\Edit.cshtml" />
     <Content Include="Views\CreditProposals\Index.cshtml" />
     <Content Include="Views\Transfers\Create.cshtml" />
     <Content Include="Views\Transfers\PaymentAndPayOff.cshtml" />

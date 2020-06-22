@@ -28,6 +28,7 @@ namespace BankProjekt.Controllers
         // GET: Credits/Details/5
         public ActionResult Details(int? id)
         {
+            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -39,6 +40,7 @@ namespace BankProjekt.Controllers
             }
             return View(credit);
         }
+
         // GET: Credits/Details/5
         public ActionResult CreditPayment(int? id)
         {
@@ -48,12 +50,11 @@ namespace BankProjekt.Controllers
             }
             var credit = db.Credits.Find(id);
             var profile = db.Profiles.Single(p => p.Email.Equals(User.Identity.Name));
-            if(credit.MonthlyRepayment <= credit.BankAccount.Balance)
+            if (credit.MonthlyRepayment <= credit.BankAccount.Balance)
             {
-                credit.BankAccount.Balance -= credit.MoneyToPay;
+                credit.BankAccount.Balance -= credit.MonthlyRepayment;
                 Transfer transfer = new Transfer()
                 {
-                    
                     AddressesName = profile.Name,
                     AddressesNumber = credit.BankAccount.Number,
                     AddresseBalance = credit.BankAccount.Balance,
@@ -68,11 +69,17 @@ namespace BankProjekt.Controllers
                 credit.MoneyToPay -= credit.MonthlyRepayment;
                 credit.NumberOfMonthsLeft--;
 
-                if(credit.NumberOfMonths == 0)
+                if (credit.NumberOfMonths == 0)
                 {
                     credit.Status = CreditStatus.Repayed;
                 }
                 db.SaveChanges();
+            }
+            else
+            {
+                Credit credit2 = db.Credits.Find(id);
+                @ViewBag.Err = "You dont have enough money";
+                return RedirectToAction("Details", credit2);
             }
 
             return RedirectToAction("Index");
@@ -107,9 +114,15 @@ namespace BankProjekt.Controllers
                 credit.Status = CreditStatus.Repayed;
                 db.SaveChanges();
             }
+            else
+            {
+                Credit credit2 = db.Credits.Find(id);
+                ModelState.AddModelError("", "You dont have enough money.");
+                @ViewBag.Err = "You dont have enough money";
+                return RedirectToAction("Details", credit2);
+            }
             return RedirectToAction("Index");
         }
-
 
         protected override void Dispose(bool disposing)
         {

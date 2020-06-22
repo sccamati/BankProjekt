@@ -3,6 +3,16 @@
     padding-bottom: 20px;
 }
 
+.menuColor {
+    background-image: linear-gradient(to bottom, cornflowerblue, royalblue);
+    background-color: cornflowerblue
+}
+
+.my-menu {
+    color: white;
+}
+
+
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;

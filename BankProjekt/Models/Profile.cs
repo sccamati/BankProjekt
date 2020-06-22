@@ -14,6 +14,7 @@ namespace BankProjekt.Models
         public String Name { get; set; }
 
         [StringLength(50)]
+        [Display(Name = "Last Name")]
         public String LastName { get; set; }
 
         public String Email { get; set; }
@@ -22,9 +23,11 @@ namespace BankProjekt.Models
         public String Pesel { get; set; }
 
         [DataType(DataType.Date)]
+        [Display(Name = "Birth Date")]
         public DateTime BirthDate { get; set; }
 
         [StringLength(50)]
+        [Display(Name = "Mothers Name")]
         public String MothersName { get; set; }
 
         public virtual Address Address { get; set; }

@@ -26,26 +26,17 @@ namespace BankProjekt.Controllers
                 BankAccount bankAccount = new BankAccount() { Number = (Int32.Parse(number) + 1).ToString(), Balance = 0, Profile = profile };
                 db.BankAccounts.Add(bankAccount);
                 db.SaveChanges();
-                ViewBag.Error("");
+                
                 return RedirectToAction("Index", "Profiles");
             }
             else
             {
-                ViewBag.Error("You cant have more than 3 accounts");
+                
                 return RedirectToAction("Index", "Profiles");
             }
         }
            
 
-        // GET: BankAccounts/Delete/5
-       /* public ActionResult Delete(int? id)
-        {
-            db.BankAccounts.Remove(db.BankAccounts.Single(b => b.Id == id));
-            db.SaveChanges();
-            
-            return RedirectToAction("Index", "Profiles");
-        }
-        */
         protected override void Dispose(bool disposing)
         {
             if (disposing)

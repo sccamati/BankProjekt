@@ -13,7 +13,7 @@ using System.Web.Mvc;
 
 namespace BankProjekt.Controllers
 {
-    //[Authorize(Roles = "Admin, Worker")]
+    [Authorize(Roles = "Admin, Worker")]
     public class WorkerController : Controller
     {
         private BankContext db = new BankContext();

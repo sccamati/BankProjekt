@@ -7,7 +7,7 @@
 <h2>View</h2>
 
 <div>
-    <h4>CreditProposal</h4>
+    <h4>Credit Proposal</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -17,7 +17,7 @@
         <dd>
             @Html.DisplayFor(model => model.BankAccount.Number)
         </dd>
-
+        <hr />
         <dt>
             @Html.DisplayNameFor(model => model.Cash)
         </dt>
@@ -25,7 +25,7 @@
         <dd>
             @Html.DisplayFor(model => model.Cash)
         </dd>
-
+        <hr />
         <dt>
             @Html.DisplayNameFor(model => model.NumberOfMonths)
         </dt>
@@ -37,21 +37,12 @@
         <dt>
             @Html.DisplayNameFor(model => model.ProposalStatus)
         </dt>
-
+        <hr />
         <dd>
             @Html.DisplayFor(model => model.ProposalStatus)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Picture)
-        </dt>
-
-        <dd>
-            <img src="~/Pictures/@Model.Picture" alt="" />
         </dd>
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

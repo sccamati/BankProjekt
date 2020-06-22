@@ -23,7 +23,7 @@ namespace BankProjekt.Controllers
                 list.AddRange(transfers.Where(t => t.AddressesNumber.Equals(item.Number) || t.ReceiversNumber.Equals(item.Number)));
             }
             ViewBag.BankNumbers = bankAccounts.Select(b => b.Number);
-            return View(list.Take(5).OrderBy(t => t.Date));
+            return View(list.Take(5).OrderByDescending(t => t.Date));
         }
 
         public ActionResult Index()
