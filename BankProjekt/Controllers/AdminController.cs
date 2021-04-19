@@ -165,5 +165,36 @@ namespace BankProjekt.Controllers
             }
             return View();
         }
+
+        // GET: Profiles/Delete/5
+        public ActionResult DeleteWorker(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Profile profile = db.Profiles.Find(id);
+            if (profile == null)
+            {
+                return HttpNotFound();
+            }
+            return View(profile);
+        }
+
+        // POST: Profiles/Delete/5
+        [HttpPost, ActionName("DeleteWorker")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            var userManager = new UserManager<ApplicationUser>(
+                new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            Profile profile = db.Profiles.Find(id);
+            Address address = db.Addresses.Find(profile.Address.Id);
+            db.Addresses.Remove(address);
+            db.Profiles.Remove(profile);
+            userManager.Delete(userManager.FindByName(profile.Email));
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }

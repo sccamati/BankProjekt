@@ -627,8 +627,6 @@
     <Content Include="Views\Transfers\Create.cshtml" />
     <Content Include="Views\Transfers\PaymentAndPayOff.cshtml" />
     <Content Include="Views\BankAccounts\Create.cshtml" />
-    <Content Include="Views\BankAccounts\Delete.cshtml" />
-    <Content Include="Views\BankAccounts\Details.cshtml" />
     <Content Include="Views\BankAccounts\Edit.cshtml" />
     <Content Include="Views\BankAccounts\Index.cshtml" />
     <Content Include="Views\Worker\CreditProposalsList.cshtml" />
@@ -645,6 +643,7 @@
     <Content Include="Views\Admin\Create.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Profiles\EditAddress.cshtml" />
+    <Content Include="Views\Admin\DeleteWorker.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

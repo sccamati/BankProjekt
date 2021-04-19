@@ -52,28 +52,31 @@
 
 }
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayName("Name")
-        </th>
-        <th>
-            @Html.DisplayName("Last Name")
-        </th>
-        <th>
-            @Html.DisplayName("Email")
-        </th>
-        <th>
-            @Html.DisplayName("PESEL")
-        </th>
-        <th>
-            @Html.DisplayName("Birth Date")
-        </th>
-        <th>
-            @Html.DisplayName("Mother Name")
-        </th>
-        <th></th>
-    </tr>
+<table class="table table-striped">
+    <thead style=" background-color: lightblue;">
+        <tr>
+
+            <th>
+                @Html.DisplayName("Name")
+            </th>
+            <th>
+                @Html.DisplayName("Last Name")
+            </th>
+            <th>
+                @Html.DisplayName("Email")
+            </th>
+            <th>
+                @Html.DisplayName("PESEL")
+            </th>
+            <th>
+                @Html.DisplayName("Birth Date")
+            </th>
+            <th>
+                @Html.DisplayName("Mother Name")
+            </th>
+            <th></th>
+        </tr>
+    </thead>
 
     @foreach (var item in Model)
     {
@@ -97,10 +100,18 @@
                 @Html.DisplayFor(modelItem => item.MothersName)
             </td>
             <td>
-                @Html.ActionLink("Credit Proposals", "Index", "CreditProposals", new { id = item.Id }, null) |
-                @Html.ActionLink("Profile", "Index", "Profiles", new { id = item.Id }, null) |
-                @Html.ActionLink("Credits", "Index", "Credits", new { id = item.Id }, null) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+
+                @if (item.BankAccounts.Count == 0)
+                {
+                    @Html.ActionLink("Profile |", "Index", "Profiles", new { id = item.Id }, null) 
+                    @Html.ActionLink(" Fire Worker", "DeleteWorker", "Admin", new { id = item.Id }, null)
+                }
+                else
+                {
+                    @Html.ActionLink("Credit Proposals |", "Index", "CreditProposals", new { id = item.Id }, null) 
+                    @Html.ActionLink(" Profile |", "Index", "Profiles", new { id = item.Id }, null) 
+                    @Html.ActionLink(" Credits", "Index", "Credits", new { id = item.Id }, null) 
+                }
             </td>
         </tr>
     }

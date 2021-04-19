@@ -67,9 +67,9 @@ namespace BankProjekt.Controllers
             {
                 db.Entry(profile).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                
             }
-            return View(profile);
+            return RedirectToAction("Index", new { id = profile.Id });
         }
 
         // GET: Profiles/Edit/5
@@ -94,13 +94,15 @@ namespace BankProjekt.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditAddress([Bind(Include = "Id, HouseNumber, Street, PostCode, City")] Address address)
         {
+            Profile profile = null;
             if (ModelState.IsValid)
             {
                 db.Entry(address).State = EntityState.Modified;
+                profile = db.Profiles.Single(p => p.Address.Id.Equals(address.Id));
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                
             }
-            return View(address);
+            return RedirectToAction("Index", new { id = profile.Id });
         }
 
         // GET: Profiles/Delete/5
